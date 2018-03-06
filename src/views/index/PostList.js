@@ -2,6 +2,8 @@ import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 
+import { fromNow } from '../../utils/date';
+
 const Post = styled.div`
   border-bottom: 1px solid #ebebeb;
 `;
@@ -37,7 +39,7 @@ class PostList extends PureComponent {
               <img src={post.cover} alt="cover" />
             </CoverWrap>
             <p className="breaf">{post.brief}</p>
-            {/* <span>{{fromNow(1)}}</span> */}
+            <span>{fromNow(post.create_time)}</span>
           </Post>            
         ))}
       </Fragment>
