@@ -1,10 +1,12 @@
 import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
 import { fromNow } from '../../utils/date';
 
-const Post = styled.div`
+const Post = styled(Link)`
+  color: #444444;
   border-bottom: 1px solid #ebebeb;
 `;
 const CoverWrap = styled.div`
@@ -33,7 +35,10 @@ class PostList extends PureComponent {
     return (
       <Fragment>
         {posts.map(post => (
-          <Post key={post.id}>
+          <Post 
+            key={post.id} 
+            to={`/post/${post.id}`}
+          >
             <h3>{post.title}</h3>
             <CoverWrap>
               <img src={post.cover} alt="cover" />
