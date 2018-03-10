@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import 'normalize.css';
+import 'antd-mobile/dist/antd-mobile.css';
 
-import './common.css';
+import './styles/common.css';
 import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 
