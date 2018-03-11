@@ -2,6 +2,7 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { PostDetail, PostHeader, PostMeta } from './post.style';
 import { fromNow } from '../../utils/date';
+
 class Post extends Component {
   static propTypes = {
     match: PropTypes.object.isRequired

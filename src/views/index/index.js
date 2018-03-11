@@ -1,6 +1,7 @@
 import React, { Component, Fragment } from 'react';
 import styled from 'styled-components';
 
+import axios from '../../utils/axios';
 import PostList from './PostList';
 
 const Header = styled.div`
@@ -31,6 +32,10 @@ class Index extends Component {
         status: 1,
       }
     ],
+  };
+  async componentDidMount() {
+    const test = await axios.get('/');
+    console.log(test);
   };
   render() {
     console.log(this.state.posts);
