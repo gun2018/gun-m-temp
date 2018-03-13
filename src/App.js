@@ -2,23 +2,21 @@ import React from 'react';
 import { Route, Redirect, Switch, Router } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory'
 
-import Index from './views/index/index';
-import Post from './views/post/post';
+import router from './router.js'
 
 const history = createBrowserHistory()
 
 const App = () => (
   <Router history={history}>
     <Switch>
-      <Route
-        path="/"
-        component={Index}
-        exact
-      />
-      <Route
-        path="/post/:id"
-        component={Post}
-      />
+      {router.map(route => (
+        <Route
+          key={route.component}
+          path={route.path}
+          component={route.component}
+          exect={route.exact}
+        />
+      ))}
       <Redirect to="/" />
     </Switch>
   </Router>
