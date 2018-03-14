@@ -6,7 +6,7 @@ const router = [{
     component: Index,
     exact: true
   },{
-    path: '/post/:id"',
+    path: '/post/:id',
     component: Post,
     exact: false
 }]
