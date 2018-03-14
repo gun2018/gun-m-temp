@@ -7,6 +7,7 @@ import { fromNow } from '../../utils/date';
 
 const Post = styled(Link)`
   color: #444444;
+  display: inline-block;
   border-bottom: 1px solid #ebebeb;
 `;
 const CoverWrap = styled.div`
@@ -40,12 +41,14 @@ class PostList extends PureComponent {
             key={post.id} 
             to={`/post/${post.id}`}
           >
-            <h3>{post.title}</h3>
-            <CoverWrap>
-              <img src={post.cover} alt="cover" />
-            </CoverWrap>
-            <p className="breaf">{post.brief}</p>
-            <span>{fromNow(post.create_time)}</span>
+            <div>
+              <h3>{post.title}</h3>
+              <CoverWrap>
+                <img src={post.cover} alt="cover" />
+              </CoverWrap>
+              <p className="breaf">{post.brief}</p>
+              <span>{fromNow(post.create_time)}</span>
+            </div>
           </Post>            
         ))}
       </Fragment>
