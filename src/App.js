@@ -14,7 +14,7 @@ const App = () => (
           key={route.component}
           path={route.path}
           component={route.component}
-          exect={route.exact}
+          exact={route.exact}
         />
       ))}
       <Redirect to="/" />

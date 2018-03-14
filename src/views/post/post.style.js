@@ -26,7 +26,7 @@ export const PostHeader = styled.div`
   }
 `;
 
-export const  PostMeta = styled.div`
+export const PostMeta = styled.div`
   position: absolute;
   color: rgba(255,255,255,0.5);
   bottom: ${px2rem(40)};
@@ -43,5 +43,15 @@ export const PostDetail = styled.div`
     img {
       width: 100%;
     }
+  }
+  > .popup {
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
   }
 `;
