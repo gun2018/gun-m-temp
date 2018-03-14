@@ -32,6 +32,7 @@ class PostList extends PureComponent {
   render() {
     console.log(this.state.test);
     const { posts } = this.props;
+    console.log('posts', posts);
     return (
       <Fragment>
         {posts.map(post => (

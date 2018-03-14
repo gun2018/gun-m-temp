@@ -8,12 +8,22 @@ class Post extends Component {
     match: PropTypes.object.isRequired
   }
   state = {
-    post: null
+    post: null,
+    isView: false
   };
   componentDidMount() {
     const { params } = this.props.match;
     console.log('params', params);
   };
+  checkView = () => {
+    this.setState({ isView: true });
+  };
+  doubleClick = () => {
+    console.log('双击事件');
+  };
+  longPress = () => {
+    console.log('长按事件');
+  }
   render() {
     console.log(this.state.post);
     console.log(this.props.match);
@@ -28,7 +38,12 @@ class Post extends Component {
           </div>
         </PostHeader>
         <PostDetail>
-          <p>一家流淌着年轻人热血的中国公司要在美国上市了。</p>
+          {this.state.isView && 
+            <div className="popup"></div>
+          }
+          <p 
+          onClick={this.checkView} 
+          >一家流淌着年轻人热血的中国公司要在美国上市了。</p>
           <p>美国时间2018年3月2日，哔哩哔哩弹幕网（B站）向美国证监会提交IPO申请，拟在纽约证券交易所挂牌上市，股票代码为“BILI”，计划融资4亿美元。这可能是中国互联网公司“最热血”的一次IPO了，毕竟 “90后第一股”的称谓除了B站，简直没法送给其它任何人。</p>
           <p>在更“成熟世故”的商业界看来，B站的上市申请与前两天提请在纳斯达克上市的另一家中国公司——爱奇艺，本质上没什么区别。都是在线视频网站，都在亏钱。不过对B站来说，与爱奇艺相提并论可能真是个“白马非马”的故事。</p>
           <p>它背后的问题是：我们该如何看待B站商业价值的异质性。B站被打上的两个标签是：“中国Z世代”和社区。而实质上，B站的模型应该是社区和内容分发，而通常意义上“视频网站”的归类，对B站是一种典型的商业误读 。</p>
