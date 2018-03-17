@@ -1,8 +1,9 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { PostDetail, PostHeader, PostMeta, PopUp } from './post.style';
+import { PostDetail, PostHeader, PostMeta } from './post.style';
 import { fromNow } from '../../utils/date';
 import axios from '../../utils/axios';
+import PopUp from './PopUp';
 
 class Post extends Component {
   static propTypes = {
@@ -54,6 +55,6 @@ class Post extends Component {
         }
       </Fragment>
     )
-  }
+  };
 };
 export default Post;
