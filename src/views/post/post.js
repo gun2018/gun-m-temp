@@ -5,13 +5,16 @@ import { fromNow } from '../../utils/date';
 import axios from '../../utils/axios';
 import PopUp from './PopUp';
 
+let CLICK_COUNT = 0;
 class Post extends Component {
   static propTypes = {
     match: PropTypes.object.isRequired
   }
   state = {
     post: null,
-    isView: false
+    isView: false,
+    clickCount: 0,
+    clickTimer: null
   };
   async componentWillMount() {
     const { params } = this.props.match;
@@ -24,15 +27,22 @@ class Post extends Component {
       post: PostData.data
     });
   };
-  checkView = () => {
-    this.setState({ isView: true });
+  checkView = () => {  
+    console.log('00000')
+    CLICK_COUNT ++;
+    setTimeout(() => {
+      if (CLICK_COUNT > 1) {
+        console.log('双击事件');
+        CLICK_COUNT = 0;
+      } else if (CLICK_COUNT === 1) {
+        this.setState({ isView: true });
+        CLICK_COUNT = 0;          
+      }
+    }, 300)
   };
-  doubleClick = () => {
-    console.log('双击事件');
+  longPress = (id) => {
+    console.log('长按事件', id);
   };
-  longPress = () => {
-    console.log('长按事件');
-  }
   render() {
     const { post } = this.state;
     if(!post) return null;
@@ -47,7 +57,11 @@ class Post extends Component {
             </PostMeta>
           </div>
         </PostHeader>
-        <PostDetail onClick={this.checkView}>
+        <PostDetail 
+        onClick={this.checkView}
+        onTouchStart={this.longPress(1)}
+        onTouchEnd={this.longPress(2)}
+        >
           <div dangerouslySetInnerHTML={{__html: post.detail.map((item) => (item.content)).join('')}} />
         </PostDetail>
         {this.state.isView && 
