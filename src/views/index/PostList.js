@@ -1,9 +1,9 @@
-import React, { PureComponent, Fragment } from 'react';
-import PropTypes from 'prop-types';
-import styled from 'styled-components';
-import { Link } from 'react-router-dom';
+import React, { PureComponent, Fragment } from "react";
+import PropTypes from "prop-types";
+import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-import { fromNow } from '../../utils/date';
+import { fromNow } from "../../utils/date";
 
 const Post = styled(Link)`
   color: #444444;
@@ -25,22 +25,18 @@ const CoverWrap = styled.div`
 
 class PostList extends PureComponent {
   static propTypes = {
-    posts: PropTypes.array.isRequired,
+    posts: PropTypes.array.isRequired
   };
   state = {
-    test: 1,
+    test: 1
   };
   render() {
     console.log(this.state.test);
     const { posts } = this.props;
-    console.log('posts', posts);
     return (
       <Fragment>
         {posts.map(post => (
-          <Post 
-            key={post.id} 
-            to={`/post/${post.id}`}
-          >
+          <Post key={post.id} to={`/post/${post.id}`}>
             <div>
               <h3>{post.title}</h3>
               <CoverWrap>
@@ -49,10 +45,10 @@ class PostList extends PureComponent {
               <p className="breaf">{post.brief}</p>
               <span>{fromNow(post.create_time)}</span>
             </div>
-          </Post>            
+          </Post>
         ))}
       </Fragment>
-    )
+    );
   }
-};
+}
 export default PostList;

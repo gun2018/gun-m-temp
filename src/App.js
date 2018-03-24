@@ -1,10 +1,11 @@
-import React from 'react';
-import { Route, Redirect, Switch, Router } from 'react-router-dom';
-import createBrowserHistory from 'history/createBrowserHistory'
+import React from "react";
+import { connect } from "react-redux";
+import { Route, Redirect, Switch, Router } from "react-router-dom";
+import createBrowserHistory from "history/createBrowserHistory";
 
-import router from './router.js'
+import router from "./router.js";
 
-const history = createBrowserHistory()
+const history = createBrowserHistory();
 
 const App = () => (
   <Router history={history}>
@@ -22,4 +23,10 @@ const App = () => (
   </Router>
 );
 
-export default App;
+function select(state) {
+  return {
+    state
+  };
+}
+
+export default connect(select)(App);
