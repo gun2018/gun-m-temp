@@ -4,6 +4,7 @@ import { PostDetail, PostHeader, PostMeta } from './post.style';
 import { fromNow } from '../../utils/date';
 import axios from '../../utils/axios';
 import PopUp from './PopUp';
+import Loading from '../../components/Loading';
 
 let CLICK_COUNT = 0;
 class Post extends Component {
@@ -12,9 +13,7 @@ class Post extends Component {
   }
   state = {
     post: null,
-    isView: false,
-    clickCount: 0,
-    clickTimer: null
+    isView: false
   };
   async componentWillMount() {
     const { params } = this.props.match;
@@ -28,7 +27,6 @@ class Post extends Component {
     });
   };
   checkView = () => {  
-    console.log('00000')
     CLICK_COUNT ++;
     setTimeout(() => {
       if (CLICK_COUNT > 1) {
@@ -41,7 +39,10 @@ class Post extends Component {
     }, 300)
   };
   longPress = (id) => {
-    console.log('长按事件', id);
+    console.log('长按事件end');
+  };
+  aaa = (a) => {
+    console.log('长按事件start');
   };
   render() {
     const { post } = this.state;
@@ -49,6 +50,7 @@ class Post extends Component {
     console.log(post);
     return (
       <Fragment>
+        <Loading />
         <PostHeader style={{backgroundImage: `url(${post.title.cover})`}}>
           <div className='title'>
             <h1>{post.title.title}</h1>
@@ -59,8 +61,8 @@ class Post extends Component {
         </PostHeader>
         <PostDetail 
         onClick={this.checkView}
-        onTouchStart={this.longPress(1)}
-        onTouchEnd={this.longPress(2)}
+        // onTouchStart={this.aaa(1)}
+        // onTouchEnd={this.longPress(2)}
         >
           <div dangerouslySetInnerHTML={{__html: post.detail.map((item) => (item.content)).join('')}} />
         </PostDetail>

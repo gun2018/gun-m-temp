@@ -15,9 +15,7 @@ const Warp = styled.div`
 class PopUp extends PureComponent {
   render() {
     return (
-      <Warp>
-
-      </Warp>
+      <Warp />
     )
   } 
 }
