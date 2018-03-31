@@ -1,12 +1,14 @@
-import React, { Component, Fragment } from "react";
-import { Button } from "antd-mobile";
-import PropTypes from "prop-types";
+import React, { Component, Fragment } from 'react';
+import { Button } from 'antd-mobile';
+import PropTypes from 'prop-types';
 // import styled from 'styled-components';
-import { connect } from "react-redux";
+import { connect } from 'react-redux';
+import { graphql, compose } from 'react-apollo';
 
-import axios from "../../utils/axios";
-import PostList from "./PostList";
-import { addCount, subCount } from "../../redux/actions/test";
+import axios from '../../utils/axios';
+import PostList from './PostList';
+import { addCount, subCount } from '../../redux/actions/test';
+import { posts } from '../../gqls/post';
 
 // const Header = styled.div`
 //   border-bottom: 1px solid #ccc;
@@ -14,36 +16,30 @@ import { addCount, subCount } from "../../redux/actions/test";
 
 class Index extends Component {
   static propTypes = {
-    dispatch: PropTypes.func.isRequired,
-    test: PropTypes.object.isRequired
+    // dispatch: PropTypes.func.isRequired,
+    posts: PropTypes.object.isRequired,
   };
   static defaultProps = {};
-  state = {
-    posts: []
-  };
   async componentWillMount() {
-    const postData = await axios.get("/posts");
-    this.setState({
-      posts: postData.data
-    });
+    // const postData = await axios.get("/posts");
   }
   render() {
-    const { posts } = this.state;
-    const { test, dispatch } = this.props;
+    const { posts = [] } = this.props.posts;
+    // const { test, dispatch } = this.props;
     return (
       <Fragment>
         {/* <Header>Index</Header> */}
         <PostList posts={posts} />
         <Button
-          style={{ postion: "fixed", left: 0, top: 0 }}
-          onClick={() => dispatch(subCount())}
+          style={{ postion: 'fixed', left: 0, top: 0 }}
+          // onClick={() => dispatch(subCount())}
         >
           -
         </Button>
-        <div>{test.count}</div>
+        {/* <div>{test.count}</div> */}
         <Button
-          style={{ postion: "fixed", left: 0, top: 0 }}
-          onClick={() => dispatch(addCount())}
+          style={{ postion: 'fixed', left: 0, top: 0 }}
+          // onClick={() => dispatch(addCount())}
         >
           +
         </Button>
@@ -51,10 +47,17 @@ class Index extends Component {
     );
   }
 }
-function select(state) {
-  return {
-    test: state.test,
-    auth: state.auth
-  };
-}
-export default connect(select)(Index);
+
+const wrapper = compose(
+  graphql(posts, {
+    name: 'posts',
+  })
+);
+// function select(state) {
+//   return {
+//     test: state.test,
+//     auth: state.auth
+//   },
+// };
+
+export default wrapper(Index);
