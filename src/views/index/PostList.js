@@ -1,9 +1,9 @@
-import React, { PureComponent, Fragment } from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import React, { PureComponent, Fragment } from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 
-import { fromNow } from "../../utils/date";
+import { fromNow } from '../../utils/date';
 
 const Post = styled(Link)`
   color: #444444;
@@ -25,10 +25,10 @@ const CoverWrap = styled.div`
 
 class PostList extends PureComponent {
   static propTypes = {
-    posts: PropTypes.array.isRequired
+    posts: PropTypes.array.isRequired,
   };
   state = {
-    test: 1
+    test: 1,
   };
   render() {
     console.log(this.state.test);
