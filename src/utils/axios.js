@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import axios from "axios";
+import axios from 'axios';
 
 function handleResponse(response) {
   if (response.data.code === 0) {
@@ -13,12 +13,12 @@ function csrfSafeMethod(method) {
 }
 function getToken() {
   // temporarily! need to be modified.
-  return document.cookie.split("=")[1];
+  return document.cookie.split('=')[1];
 }
 
 Object.keys(axios.defaults.headers).forEach(method => {
-  if (!csrfSafeMethod(method) && method !== "common") {
-    axios.defaults.headers[method]["x-csrf-token"] = getToken();
+  if (!csrfSafeMethod(method) && method !== 'common') {
+    axios.defaults.headers[method]['x-csrf-token'] = getToken();
   }
 });
 
@@ -33,5 +33,5 @@ export default {
   async post(url, params, options) {
     const resp = await axios.post(url, params, options);
     return handleResponse(resp);
-  }
+  },
 };

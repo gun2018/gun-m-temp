@@ -5,14 +5,9 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 
-import axios from '../../utils/axios';
 import PostList from './PostList';
 import { addCount, subCount } from '../../redux/actions/test';
 import { posts } from '../../gqls/post';
-
-// const Header = styled.div`
-//   border-bottom: 1px solid #ccc;
-// `;
 
 class Index extends Component {
   static propTypes = {
@@ -21,6 +16,8 @@ class Index extends Component {
   };
   static defaultProps = {};
   async componentWillMount() {
+    console.log('index', this.props);
+    // toWechatLoginPage();
     // const postData = await axios.get("/posts");
   }
   render() {
