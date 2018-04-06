@@ -1,23 +1,20 @@
-import { UPDATE_USER_INFO } from "../actionTypes";
+import { UPDATE_USER_INFO } from '../actionTypes';
 
 const initialState = {
-  isLoggedIn: false,
-  error: "",
-  user: {},
-  im: {}
+  openId: '',
+  headimgurl: '',
+  nickname: '',
+  sex: 0,
 };
 
-const auth = (state = initialState, { type, payload }) => {
-  console.log(type);
-
+const auth = (state = initialState, { type, payload = {} }) => {
   switch (type) {
     case UPDATE_USER_INFO:
       return {
-        ...state,
-        bindId: payload.bindId,
-        isLoggedIn: true,
-        im: payload.im,
-        user: payload.user
+        openId: payload.open_id,
+        headimgurl: payload.headimgurl,
+        nickname: payload.nickname,
+        sex: payload.sex,
       };
     default:
       return state;

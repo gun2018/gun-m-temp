@@ -1,11 +1,9 @@
 // import request from "../../util/request";
 // import { logout } from "../../config/api";
-import { UPDATE_USER_INFO } from "../actionTypes";
+import { UPDATE_USER_INFO } from '../actionTypes';
 
 export function setUserInfo(data) {
-  return async dispatch => {
-    dispatch({ type: UPDATE_USER_INFO, payload: data });
-  };
+  return { type: UPDATE_USER_INFO, payload: data };
 }
 export function a() {}
 

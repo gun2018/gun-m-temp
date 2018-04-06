@@ -13,18 +13,19 @@ class Index extends Component {
   static propTypes = {
     // dispatch: PropTypes.func.isRequired,
     posts: PropTypes.object.isRequired,
+    auth: PropTypes.object.isRequired,
   };
   static defaultProps = {};
-  async componentWillMount() {
-    console.log('index', this.props);
-    // toWechatLoginPage();
-    // const postData = await axios.get("/posts");
-  }
+  async componentWillMount() {}
   render() {
+    const { auth } = this.props;
     const { posts = [] } = this.props.posts;
     // const { test, dispatch } = this.props;
     return (
       <Fragment>
+        <div>
+          <img src={auth.headimgurl} alt="avator" />
+        </div>
         {/* <Header>Index</Header> */}
         <PostList posts={posts} />
         <Button
@@ -50,11 +51,10 @@ const wrapper = compose(
     name: 'posts',
   })
 );
-// function select(state) {
-//   return {
-//     test: state.test,
-//     auth: state.auth
-//   },
-// };
+function select(state) {
+  return {
+    auth: state.auth,
+  };
+}
 
-export default wrapper(Index);
+export default connect(select)(wrapper(Index));

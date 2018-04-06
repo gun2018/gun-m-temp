@@ -8,6 +8,7 @@ import { checkAuth, wxLogin } from '../src/config/api';
 import axios from '../src/utils/axios';
 import { parseQuery } from '../src/utils/tools';
 import { WX_APP_ID } from '../src/config/constant';
+import { setUserInfo } from '../src/redux/actions/auth';
 
 const history = createBrowserHistory();
 const query = parseQuery(history.location.search);
@@ -19,14 +20,17 @@ const toWechatLoginPage = () => {
 };
 
 class App extends Component {
-  static propTypes = {};
+  static propTypes = {
+    dispatch: PropTypes.func.isRequired,
+  };
   state = {};
   async componentWillMount() {
     try {
       const checkAuthRes = await axios.get(checkAuth);
-      // dispatch
-      // return;
-      if (checkAuthRes.data.access_token) return; // 登录成功
+      if (checkAuthRes.data.open_id) {
+        this.props.dispatch(setUserInfo(checkAuthRes.data));
+        return; // 登录成功
+      }
     } catch (error) {
       console.log(error);
     }
