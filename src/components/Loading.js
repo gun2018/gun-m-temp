@@ -1,4 +1,4 @@
-import React, { PureComponent } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 
 const Warp = styled.div`
@@ -16,12 +16,9 @@ const Warp = styled.div`
   z-index: 99;
 `;
 
-class Loading extends PureComponent {
-  render() {
-    return (
-      <Warp>加载中...</Warp>
-    )
-  }
-}
+
+const Loading = (prpps) => (
+  <Warp>{prpps.co}</Warp>
+)
 
 export default Loading;

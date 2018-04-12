@@ -9,6 +9,7 @@ import PostList from './PostList';
 import { addCount, subCount } from '../../redux/actions/test';
 import { posts } from '../../gqls/post';
 import { Warp } from './index.style';
+import Comments from '../../components/Comments'
 
 class Index extends Component {
   static propTypes = {
@@ -59,6 +60,7 @@ class Index extends Component {
           />
           {/* <div className="load">松开加载</div> */}
         </Warp>
+        <Comments />
       </Fragment>
     );
   }
