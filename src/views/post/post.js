@@ -1,9 +1,12 @@
 import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
-import { PostDetail, PostHeader, PostMeta, PopUp } from './post.style';
+import { PostDetail, PostHeader, PostMeta } from './post.style';
 import { fromNow } from '../../utils/date';
 import axios from '../../utils/axios';
+import PopUp from './PopUp';
+import Loading from '../../components/Loading';
 
+let CLICK_COUNT = 0;
 class Post extends Component {
   static propTypes = {
     match: PropTypes.object.isRequired
@@ -23,21 +26,31 @@ class Post extends Component {
       post: PostData.data
     });
   };
-  checkView = () => {
-    this.setState({ isView: true });
+  checkView = () => {  
+    CLICK_COUNT ++;
+    setTimeout(() => {
+      if (CLICK_COUNT > 1) {
+        console.log('双击事件');
+        CLICK_COUNT = 0;
+      } else if (CLICK_COUNT === 1) {
+        this.setState({ isView: true });
+        CLICK_COUNT = 0;          
+      }
+    }, 300)
   };
-  doubleClick = () => {
-    console.log('双击事件');
+  longPress = (id) => {
+    console.log('长按事件end');
   };
-  longPress = () => {
-    console.log('长按事件');
-  }
+  aaa = (a) => {
+    console.log('长按事件start');
+  };
   render() {
     const { post } = this.state;
     if(!post) return null;
     console.log(post);
     return (
       <Fragment>
+        <Loading />
         <PostHeader style={{backgroundImage: `url(${post.title.cover})`}}>
           <div className='title'>
             <h1>{post.title.title}</h1>
@@ -46,7 +59,11 @@ class Post extends Component {
             </PostMeta>
           </div>
         </PostHeader>
-        <PostDetail onClick={this.checkView}>
+        <PostDetail 
+        onClick={this.checkView}
+        // onTouchStart={this.aaa(1)}
+        // onTouchEnd={this.longPress(2)}
+        >
           <div dangerouslySetInnerHTML={{__html: post.detail.map((item) => (item.content)).join('')}} />
         </PostDetail>
         {this.state.isView && 
@@ -54,6 +71,6 @@ class Post extends Component {
         }
       </Fragment>
     )
-  }
+  };
 };
 export default Post;
