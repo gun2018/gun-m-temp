@@ -45,7 +45,7 @@ class App extends Component {
         const wxLoginRes = await axios.post(wxLogin, {
           code,
         });
-        console.log('wxLoginRes', wxLoginRes);
+        this.props.dispatch(setUserInfo(wxLoginRes.data));
         return;
       } catch (error) {
         console.log('登录失败', error);

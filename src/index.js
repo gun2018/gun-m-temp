@@ -8,11 +8,12 @@ import { ApolloProvider } from 'react-apollo';
 
 import 'normalize.css';
 import 'antd-mobile/dist/antd-mobile.css';
+import 'antd/dist/antd.css';
 
 import reducers from './redux/reducers';
 import './styles/common.css';
 import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+// import registerServiceWorker from './registerServiceWorker';
 import client from './services/client';
 
 const middleware = [thunk];
@@ -30,4 +31,4 @@ ReactDOM.render(
   </ApolloProvider>,
   document.getElementById('root')
 );
-registerServiceWorker();
+// registerServiceWorker();

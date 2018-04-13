@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "ajv": "^6.2.1",
+    "antd": "^3.4.0",
     "antd-mobile": "^2.1.6",
     "apollo-cache-inmemory": "^1.1.12",
     "apollo-client": "^2.2.8",

@@ -1,5 +1,6 @@
 import React, { Component, Fragment } from 'react';
 import { Button } from 'antd-mobile';
+import { Avatar } from 'antd';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { connect } from 'react-redux';
@@ -40,7 +41,7 @@ class Index extends Component {
     return (
       <Fragment>
         <div>
-          <img src={auth.headimgurl} alt="avator" />
+          <Avatar src={auth.headimgurl} icon="user" />
         </div>
         {/* <Header>Index</Header> */}
         <PostList posts={posts} />
