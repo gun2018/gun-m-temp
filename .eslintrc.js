@@ -33,6 +33,7 @@ module.exports = {
     'linebreak-style': 'off',
     'no-shadow': 'off',
     'import/prefer-default-export': 'off',
+    'no-plusplus': 'off',
   },
   globals: {
     window: true,

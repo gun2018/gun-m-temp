@@ -14,7 +14,7 @@ import Comments from '../../components/Comments';
 class Index extends Component {
   static propTypes = {
     // dispatch: PropTypes.func.isRequired,
-    posts: PropTypes.object.isRequired,
+    postsRes: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
   };
   static defaultProps = {};
@@ -28,7 +28,7 @@ class Index extends Component {
   state = {};
   render() {
     const { auth } = this.props;
-    const { posts = [] } = this.props.posts;
+    const { posts = [] } = this.props.postsRes;
     return (
       <Fragment>
         <div>
@@ -42,15 +42,16 @@ class Index extends Component {
   }
 }
 
-const wrapper = compose(
-  graphql(posts, {
-    name: 'posts',
-  })
-);
 function select(state) {
   return {
     auth: state.auth,
   };
 }
+const wrapper = compose(
+  graphql(posts, {
+    name: 'postsRes',
+  }),
+  connect(select)
+);
 
-export default connect(select)(wrapper(Index));
+export default wrapper(Index);
