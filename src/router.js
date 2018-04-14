@@ -3,6 +3,7 @@ import Post from './views/post/post';
 import Search from './views/search/search';
 import UserCenter from './views/user/user_center';
 import Message from './views/message/message';
+import Thinking from './views/thinking/thinking';
 
 const router = [
   {
@@ -24,6 +25,11 @@ const router = [
     path: '/user',
     isShowFooter: true,
     component: UserCenter,
+  },
+  {
+    path: '/thinkings',
+    isShowFooter: false,
+    component: Thinking,
   },
   {
     path: '/message',
