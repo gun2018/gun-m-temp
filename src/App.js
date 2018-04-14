@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Route, Redirect, Switch, Router } from 'react-router-dom';
@@ -9,6 +9,8 @@ import axios from '../src/utils/axios';
 import { parseQuery } from '../src/utils/tools';
 import { WX_APP_ID } from '../src/config/constant';
 import { setUserInfo } from '../src/redux/actions/auth';
+
+import FooterBar from './components/FooterBar';
 
 const history = createBrowserHistory();
 const query = parseQuery(history.location.search);
@@ -57,19 +59,28 @@ class App extends Component {
   }
   render() {
     return (
-      <Router history={history}>
-        <Switch>
-          {router.map(route => (
-            <Route
-              key={route.path}
-              path={route.path}
-              component={route.component}
-              exact={route.exact}
-            />
-          ))}
-          <Redirect to="/" />
-        </Switch>
-      </Router>
+      <Fragment>
+        <Router history={history}>
+          <Switch>
+            {router.map(
+              ({ path, exact, isShowFooter, component: Component }) => (
+                <Route
+                  key={path}
+                  path={path}
+                  render={props => (
+                    <Fragment>
+                      <Component {...props} />
+                      {isShowFooter && <FooterBar />}
+                    </Fragment>
+                  )}
+                  exact={exact}
+                />
+              )
+            )}
+            <Redirect to="/" />
+          </Switch>
+        </Router>
+      </Fragment>
     );
   }
 }
