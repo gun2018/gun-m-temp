@@ -1,6 +1,6 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 // import { Button } from 'antd-mobile';
-import { Avatar } from 'antd';
+import { Avatar, Icon } from 'antd';
 import PropTypes from 'prop-types';
 // import styled from 'styled-components';
 import { connect } from 'react-redux';
@@ -8,7 +8,7 @@ import { graphql, compose } from 'react-apollo';
 
 import PostList from './PostList';
 import { posts } from '../../gqls/post';
-import { Warp } from './index.style';
+import { Container, Topbar } from './index.style';
 import Comments from '../../components/Comments';
 
 class Index extends Component {
@@ -30,14 +30,16 @@ class Index extends Component {
     const { auth } = this.props;
     const { posts = [] } = this.props.postsRes;
     return (
-      <Fragment>
-        <div>
-          <Avatar src={auth.headimgurl} icon="user" />
-        </div>
+      <Container>
+        <Topbar>
+          <Icon type="search" className="icon" />
+          <div className="logo">logo</div>
+          <Avatar src={auth.headimgurl} icon="user" className="avatar" />
+        </Topbar>
         <PostList posts={posts} />
         {/* </Warp> */}
         <Comments />
-      </Fragment>
+      </Container>
     );
   }
 }
