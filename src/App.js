@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { Route, Redirect, Switch, Router } from 'react-router-dom';
 import createBrowserHistory from 'history/createBrowserHistory';
 import router from './router.js';
-import { checkAuth, wxLogin } from '../src/config/api';
+import { checkAuth, wxLogin, simulateLogin } from '../src/config/api';
 import axios from '../src/utils/axios';
 import { parseQuery } from '../src/utils/tools';
 import { WX_APP_ID } from '../src/config/constant';
@@ -36,10 +36,21 @@ class App extends Component {
     } catch (error) {
       console.log(error);
     }
+
     const isWechat = /micromessenger/.test(
       window.navigator.userAgent.toLowerCase()
     );
-    if (!isWechat) return; // 非微信环境
+    if (!isWechat) {
+      // 非微信环境暂时模拟登陆，之后直接return
+      try {
+        const simulateLoginRes = await axios.get(simulateLogin);
+        this.props.dispatch(setUserInfo(simulateLoginRes.data));
+      } catch (error) {
+        console.log('模拟登陆失败: ', error);
+      }
+      return;
+    }
+
     const { code } = query;
     if (code) {
       // 给后台发送 code
@@ -51,7 +62,7 @@ class App extends Component {
         return;
       } catch (error) {
         console.log('登录失败', error);
-        alert('登录失败，刷新后重试');
+        alert('登录失败，刷新后重试', error);
         return;
       }
     }
