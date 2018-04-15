@@ -5,6 +5,8 @@ import { thinkings } from '../../gqls/thinking';
 // import { NavLink } from 'react-router-dom';
 import { parseQuery } from '../../utils/tools';
 import Loading from '../../components/Loading';
+import Avatar from '../../components/Avatar';
+import { fromNow } from '../../utils/date';
 
 class Thingking extends Component {
   static propTypes = {
@@ -24,7 +26,13 @@ class Thingking extends Component {
     return (
       <div>
         <h3>观点页</h3>
-        {thinkings.map(thinking => <div>{thinking.content}</div>)}
+        {thinkings.map(thinking => (
+          <div key={thinking.id}>
+            <p>{thinking.content}</p>
+            <span>{fromNow(thinking.updateTime)}</span>
+            <Avatar src={thinking.owner.avatarUrl} />
+          </div>
+        ))}
       </div>
     );
   }

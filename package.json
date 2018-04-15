@@ -12,6 +12,7 @@
     "axios": "^0.18.0",
     "graphql": "^0.13.2",
     "graphql-tag": "^2.8.0",
+    "moment": "^2.22.1",
     "normalize.css": "^8.0.0",
     "prop-types": "^15.6.1",
     "react": "^16.2.0",

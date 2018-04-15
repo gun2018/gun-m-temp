@@ -9,6 +9,12 @@ export const thinkings = gql`
       createTime
       updateTime
       status
+      owner {
+        id
+        nickname
+        avatarUrl
+        sex
+      }
     }
   }
 `;
