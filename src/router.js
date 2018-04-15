@@ -13,7 +13,7 @@ const router = [
     isShowFooter: true,
   },
   {
-    path: '/post/:id',
+    path: '/post',
     component: Post,
     exact: false,
   },

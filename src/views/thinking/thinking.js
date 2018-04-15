@@ -7,6 +7,7 @@ import { parseQuery } from '../../utils/tools';
 import Loading from '../../components/Loading';
 import Avatar from '../../components/Avatar';
 import { fromNow } from '../../utils/date';
+import PostAndThinkingHeader from '../../components/PostAndThinkingHeader';
 
 class Thingking extends Component {
   static propTypes = {
@@ -23,9 +24,10 @@ class Thingking extends Component {
     console.log('query', this.query);
     console.log('thinkings', thinkings);
     if (loading) return <Loading />;
+    if (!thinkings) return <div>没有找到您需要的内容</div>;
     return (
       <div>
-        <h3>观点页</h3>
+        <PostAndThinkingHeader postId={this.query.post_id} />
         {thinkings.map(thinking => (
           <div key={thinking.id}>
             <p>{thinking.content}</p>

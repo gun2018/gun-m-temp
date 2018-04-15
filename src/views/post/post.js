@@ -7,17 +7,21 @@ import { fromNow } from '../../utils/date';
 import PopUp from './PopUp';
 import Loading from '../../components/Loading';
 import { post } from '../../gqls/post';
+import PostAndThinkingHeader from '../../components/PostAndThinkingHeader';
+import { parseQuery } from '../../utils/tools';
 
 let CLICK_COUNT = 0;
 class Post extends Component {
   static propTypes = {
     postRes: PropTypes.object.isRequired,
-    // match: PropTypes.object.isRequired
+    location: PropTypes.object.isRequired,
   };
   state = {
-    post: null,
     isView: false,
   };
+  get query() {
+    return parseQuery(this.props.location.search);
+  }
   checkView = () => {
     CLICK_COUNT++;
     setTimeout(() => {
@@ -42,6 +46,7 @@ class Post extends Component {
     console.log(post);
     return (
       <Fragment>
+        <PostAndThinkingHeader postId={this.query.post_id} />
         <PostHeader style={{ backgroundImage: `url(${post.title.cover})` }}>
           <div className="title">
             <h1>{post.title}</h1>
@@ -70,9 +75,12 @@ class Post extends Component {
 const wrapper = compose(
   graphql(post, {
     name: 'postRes',
-    options: props => ({
-      variables: { id: props.match.params.id },
-    }),
+    options: props => {
+      const query = parseQuery(props.location.search);
+      return {
+        variables: { id: query.post_id },
+      };
+    },
   })
 );
 

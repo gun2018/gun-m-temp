@@ -36,7 +36,7 @@ class PostList extends PureComponent {
     return (
       <Fragment>
         {posts.map(post => (
-          <Post key={post.id} to={`/post/${post.id}`}>
+          <Post key={post.id} to={`/post?post_id=${post.id}`}>
             <div>
               <h3>{post.title}</h3>
               <CoverWrap>
