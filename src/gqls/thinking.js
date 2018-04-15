@@ -30,3 +30,11 @@ export const thinking = gql`
     }
   }
 `;
+
+export const createThinking = gql`
+  mutation createThinking($input: AddThinkingInput!) {
+    createThinking(input: $input) {
+      id
+    }
+  }
+`;

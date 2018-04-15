@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { Button } from 'antd-mobile';
 import { graphql, compose } from 'react-apollo';
-import { thinkings } from '../../gqls/thinking';
+import { thinkings, createThinking } from '../../gqls/thinking';
 // import { NavLink } from 'react-router-dom';
 import { parseQuery } from '../../utils/tools';
 import Loading from '../../components/Loading';
@@ -12,6 +13,7 @@ import PostAndThinkingHeader from '../../components/PostAndThinkingHeader';
 class Thingking extends Component {
   static propTypes = {
     thinkingsRes: PropTypes.object.isRequired,
+    createThinking: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,
     // match: PropTypes.object.isRequired
   };
@@ -35,6 +37,9 @@ class Thingking extends Component {
             <Avatar src={thinking.owner.avatarUrl} />
           </div>
         ))}
+        <Button style={{ backgroundColor: '#ED642A', color: '#fff' }}>
+          添加
+        </Button>
       </div>
     );
   }
@@ -48,6 +53,12 @@ const wrapper = compose(
       return {
         variables: { postId: query.post_id },
       };
+    },
+  }),
+  graphql(createThinking, {
+    name: 'createThinking',
+    options: {
+      refetchQueries: ['thinkings'],
     },
   })
 );
