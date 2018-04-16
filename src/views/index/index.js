@@ -38,7 +38,7 @@ class Index extends Component {
         </Topbar>
         <PostList posts={posts} />
         {/* </Warp> */}
-        <Comments />
+        {/* <Comments /> */}
       </Container>
     );
   }

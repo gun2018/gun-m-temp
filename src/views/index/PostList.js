@@ -1,10 +1,10 @@
-import React, { PureComponent, Fragment } from "react";
-import PropTypes from "prop-types";
-import styled from "styled-components";
-import { Link } from "react-router-dom";
+import React, { PureComponent, Fragment } from 'react';
+import PropTypes from 'prop-types';
+import styled from 'styled-components';
+import { Link } from 'react-router-dom';
 import { Icon, Layout } from 'antd';
 
-import { fromNow } from "../../utils/date";
+import { fromNow } from '../../utils/date';
 import px2rem from '../../styles/px2rem';
 
 const Post = styled(Link)`
@@ -13,22 +13,22 @@ const Post = styled(Link)`
   border-bottom: 1px solid #ebebeb;
   height: ${px2rem(640)};
   width: 100%;
-  border-bottom: 1px #EFEFF5 solid;
+  border-bottom: 1px #efeff5 solid;
   margin-bottom: ${px2rem(70)};
 `;
 const Content = styled(Layout)`
-  background-color: #FFF;
+  background-color: #fff;
   width: ${px2rem(620)};
   height: 100%;
-`
+`;
 const Sider = styled(Layout)`
   width: ${px2rem(130)};
   height: 100%;
   padding: ${px2rem(40)};
   box-sizing: border-box;
   font-size: ${px2rem(28)};
-  color: #C7C7D3;
-  background-color: #FFF;
+  color: #c7c7d3;
+  background-color: #fff;
   > .icon {
     font-size: ${px2rem(32)};
     margin-bottom: ${px2rem(40)};
@@ -41,7 +41,7 @@ const Sider = styled(Layout)`
     margin-top: ${px2rem(180)};
     transform: rotate(90deg);
   }
-`
+`;
 const CoverWrap = styled.div`
   width: 100%;
   height: ${px2rem(400)};
@@ -67,10 +67,10 @@ const CoverWrap = styled.div`
 
 class PostList extends PureComponent {
   static propTypes = {
-    posts: PropTypes.array.isRequired
+    posts: PropTypes.array.isRequired,
   };
   state = {
-    test: 1
+    test: 1,
   };
   render() {
     console.log(this.state.test);
@@ -89,7 +89,7 @@ class PostList extends PureComponent {
                     </div>
                   </CoverWrap>
                   <p className="breaf">{post.brief}</p>
-                  <span>{fromNow(post.create_time)}</span>
+                  {/* <span>{fromNow(post.createTime)}</span> */}
                 </div>
               </Content>
               <Sider className="sider" breakpoint="sm">
