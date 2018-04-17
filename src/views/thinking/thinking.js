@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Button } from 'antd-mobile';
 import { graphql, compose } from 'react-apollo';
 import { connect } from 'react-redux';
 import { thinkings, createThinking } from '../../gqls/thinking';
+import Button from '../../components/Button';
 // import { NavLink } from 'react-router-dom';
 import { parseQuery } from '../../utils/tools';
 import Loading from '../../components/Loading';
@@ -74,7 +74,7 @@ class Thingking extends Component {
         ))}
         <Button
           onClick={this.toggleEditModal}
-          style={{ backgroundColor: '#ED642A', color: '#fff' }}
+          // style={{ backgroundColor: '#ED642A', color: '#fff' }}
         >
           添加
         </Button>

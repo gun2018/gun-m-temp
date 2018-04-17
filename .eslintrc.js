@@ -26,7 +26,7 @@ module.exports = {
     'react/jsx-filename-extension': [
       1,
       {
-        extensions: ['.js', '.jsx'],
+        extensions: ['.js', '.jsx', '.css', '.svg'],
       },
     ],
     // 解决window下换行格式的报错
