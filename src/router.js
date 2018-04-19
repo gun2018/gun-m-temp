@@ -4,6 +4,7 @@ import Search from './views/search/search';
 import UserCenter from './views/user/user_center';
 import Message from './views/message/message';
 import Thinking from './views/thinking/thinking';
+import UserList from './views/user/user_list';
 
 const router = [
   {
@@ -35,6 +36,16 @@ const router = [
     path: '/message',
     isShowFooter: true,
     component: Message,
+  },
+  {
+    path: '/fans',
+    isShowFooter: false,
+    component: UserList,
+  },
+  {
+    path: '/followers',
+    isShowFooter: false,
+    component: UserList,
   },
 ];
 

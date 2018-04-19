@@ -7,8 +7,8 @@ const initialState = {
   nickname: '',
   sex: 0,
   signText: '',
-  followers: null,
-  fans: null,
+  followers: [],
+  fans: [],
 };
 
 const auth = (state = initialState, { type, payload = {} }) => {

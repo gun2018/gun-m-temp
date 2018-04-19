@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { compose } from 'react-apollo';
 import Avatar from '../../components/Avatar';
 import px2rem from '../../styles/px2rem';
-// import { NavLink } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
 
 const UserInfo = styled.div``;
 
@@ -27,6 +27,14 @@ class UserCenter extends Component {
           />
           <p>{auth.nickname}</p>
           <p>{auth.signText}</p>
+          <div>
+            <NavLink to="/fans">
+              <span>粉丝: {auth.fans.length}</span>
+            </NavLink>
+            <NavLink to="/followers">
+              <span>关注: {auth.followers.length}</span>
+            </NavLink>
+          </div>
         </UserInfo>
         <h3>个人中心</h3>
       </div>
