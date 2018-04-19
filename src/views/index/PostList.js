@@ -94,9 +94,9 @@ class PostList extends PureComponent {
               </Content>
               <Sider className="sider" breakpoint="sm">
                 <Icon type="heart" className="icon" />
-                <span>285</span>
+                <span>{post.like.length}</span>
                 <Icon type="message" className="icon" />
-                <span>35</span>
+                <span>{post.thinking.length}</span>
                 <Icon type="ellipsis" className="icon-more" />
               </Sider>
             </Layout>

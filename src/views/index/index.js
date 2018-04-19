@@ -7,7 +7,7 @@ import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
 
 import PostList from './PostList';
-import { posts } from '../../gqls/post';
+import { posts, post } from '../../gqls/post';
 import { Container, Topbar } from './index.style';
 import Comments from '../../components/Comments';
 
@@ -29,12 +29,13 @@ class Index extends Component {
   render() {
     const { auth } = this.props;
     const { posts = [] } = this.props.postsRes;
+    console.log('posts', posts);
     return (
       <Container>
         <Topbar>
           <Icon type="search" className="icon" />
           <div className="logo">logo</div>
-          <Avatar src={auth.headimgurl} icon="user" className="avatar" />
+          <Avatar src={auth.avatarUrl} icon="user" className="avatar" />
         </Topbar>
         <PostList posts={posts} />
         {/* </Warp> */}

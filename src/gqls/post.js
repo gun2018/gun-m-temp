@@ -8,6 +8,14 @@ export const posts = gql`
       brief
       cover
       category
+      like {
+        id
+        userId
+      }
+      thinking {
+        id
+        userId
+      }
     }
   }
 `;
@@ -26,6 +34,10 @@ export const post = gql`
         content
         happenTime
         postId
+      }
+      like {
+        id
+        userId
       }
     }
   }

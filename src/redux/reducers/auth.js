@@ -3,9 +3,12 @@ import { UPDATE_USER_INFO } from '../actionTypes';
 const initialState = {
   id: 0,
   openId: '',
-  headimgurl: '',
+  avatarUrl: '',
   nickname: '',
   sex: 0,
+  signText: '',
+  followers: null,
+  fans: null,
 };
 
 const auth = (state = initialState, { type, payload = {} }) => {
@@ -14,9 +17,12 @@ const auth = (state = initialState, { type, payload = {} }) => {
       return {
         id: payload.id,
         openId: payload.open_id,
-        headimgurl: payload.headimgurl,
+        avatarUrl: payload.avatar_url,
         nickname: payload.nickname,
         sex: payload.sex,
+        signText: payload.sign_text,
+        followers: payload.followers,
+        fans: payload.fans,
       };
     default:
       return state;

@@ -5,21 +5,27 @@ import user from '../static/icon/user-circle.svg';
 import px2rem from '../styles/px2rem';
 
 const Wrap = styled.div`
-  width: ${px2rem(100)};
-  height: ${px2rem(100)};
+  width: ${prop => prop.width};
+  height: ${prop => prop.height};
   img {
+    border-radius: 50%;
     width: 100%;
     height: 100%;
   }
 `;
 
-const Avatar = ({ src }) => (
-  <Wrap>
+const Avatar = ({ src, width, height }) => (
+  <Wrap width={width} height={height}>
     <img src={src || user} alt="avatar" />
   </Wrap>
 );
 Avatar.propTypes = {
   src: PropTypes.string.isRequired,
+  width: PropTypes.string,
+  height: PropTypes.string,
 };
-Avatar.defaultProps = {};
+Avatar.defaultProps = {
+  width: px2rem(100),
+  height: px2rem(100),
+};
 export default Avatar;
