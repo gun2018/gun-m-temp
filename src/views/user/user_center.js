@@ -29,10 +29,10 @@ class UserCenter extends Component {
           <p>{auth.signText}</p>
           <div>
             <NavLink to="/fans">
-              <span>粉丝: {auth.fans.length}</span>
+              <span>粉丝: {auth.fanCount}</span>
             </NavLink>
             <NavLink to="/followers">
-              <span>关注: {auth.followers.length}</span>
+              <span>关注: {auth.followerCount}</span>
             </NavLink>
           </div>
         </UserInfo>

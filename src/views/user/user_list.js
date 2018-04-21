@@ -6,6 +6,7 @@ import { compose } from 'react-apollo';
 import Avatar from '../../components/Avatar';
 import px2rem from '../../styles/px2rem';
 // import { NavLink } from 'react-router-dom';
+import Button from '../../components/Button';
 
 const Wrap = styled.div``;
 
@@ -19,6 +20,7 @@ class UserList extends Component {
   get isFans() {
     return this.props.history.location.pathname.includes('fans');
   }
+  cancelFollow = () => {};
   render() {
     const { auth } = this.props;
     const { isFans } = this;
@@ -36,6 +38,13 @@ class UserList extends Component {
                 width={px2rem(106)}
                 height={px2rem(106)}
               />
+              <Button
+                onClick={() => {
+                  this.cancelFollow(user.id);
+                }}
+              >
+                取消关注
+              </Button>
             </div>
           ))}
         </Wrap>

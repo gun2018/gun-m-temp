@@ -5,6 +5,7 @@ import UserCenter from './views/user/user_center';
 import Message from './views/message/message';
 import Thinking from './views/thinking/thinking';
 import UserList from './views/user/user_list';
+import FanList from './views/user/fan_list';
 
 const router = [
   {
@@ -40,7 +41,7 @@ const router = [
   {
     path: '/fans',
     isShowFooter: false,
-    component: UserList,
+    component: FanList,
   },
   {
     path: '/followers',
