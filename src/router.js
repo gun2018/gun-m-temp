@@ -4,7 +4,7 @@ import Search from './views/search/search';
 import UserCenter from './views/user/user_center';
 import Message from './views/message/message';
 import Thinking from './views/thinking/thinking';
-import UserList from './views/user/user_list';
+import FollowerList from './views/user/follower_list';
 import FanList from './views/user/fan_list';
 
 const router = [
@@ -46,7 +46,7 @@ const router = [
   {
     path: '/followers',
     isShowFooter: false,
-    component: UserList,
+    component: FollowerList,
   },
 ];
 

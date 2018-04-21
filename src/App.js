@@ -24,6 +24,7 @@ const toWechatLoginPage = () => {
 class App extends Component {
   static propTypes = {
     dispatch: PropTypes.func.isRequired,
+    auth: PropTypes.object.isRequired,
   };
   state = {};
   async componentWillMount() {
@@ -69,6 +70,8 @@ class App extends Component {
     toWechatLoginPage();
   }
   render() {
+    const { auth } = this.props;
+    if (!auth.id) return '登录中';
     return (
       <Fragment>
         <Router history={history}>
@@ -97,7 +100,7 @@ class App extends Component {
 }
 function select(state) {
   return {
-    state,
+    auth: state.auth,
   };
 }
 

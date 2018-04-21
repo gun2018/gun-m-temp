@@ -24,11 +24,8 @@ class Thingking extends Component {
     isShowEditModal: false,
   };
   onThinkingSubmit = async thinkingValue => {
-    console.log(thinkingValue);
     const { auth } = this.props;
     const { post_id: postId } = this.query;
-    console.log('auth', auth);
-
     try {
       await this.props.createThinking({
         variables: {
@@ -50,7 +47,6 @@ class Thingking extends Component {
     return parseQuery(this.props.location.search);
   }
   toggleEditModal = () => {
-    console.log(this.state.isShowEditModal);
     this.setState({
       isShowEditModal: !this.state.isShowEditModal,
     });
@@ -58,8 +54,6 @@ class Thingking extends Component {
   render() {
     const { thinkings, loading } = this.props.thinkingsRes;
     const { isShowEditModal } = this.state;
-    console.log('query', this.query);
-    console.log('thinkings', thinkings);
     if (loading) return <Loading />;
     if (!thinkings) return <div>没有找到您需要的内容</div>;
     return (
@@ -94,8 +88,9 @@ const wrapper = compose(
     name: 'thinkingsRes',
     options: props => {
       const query = parseQuery(props.location.search);
+      console.log('query', query);
       return {
-        variables: { postId: query.post_id },
+        variables: { postId: +query.post_id },
       };
     },
   }),
