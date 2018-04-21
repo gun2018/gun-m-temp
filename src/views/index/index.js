@@ -29,7 +29,6 @@ class Index extends Component {
   render() {
     const { auth } = this.props;
     const { posts = [] } = this.props.postsRes;
-    console.log('posts', posts);
     return (
       <Container>
         <Topbar>

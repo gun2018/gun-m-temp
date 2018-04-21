@@ -43,7 +43,6 @@ class Post extends Component {
   render() {
     const { post, loading } = this.props.postRes;
     if (loading) return <Loading />;
-    console.log(post);
     return (
       <Fragment>
         <PostAndThinkingHeader postId={this.query.post_id} />

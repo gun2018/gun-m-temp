@@ -16,7 +16,6 @@ class UserCenter extends Component {
   state = {};
   render() {
     const { auth } = this.props;
-    console.log('auth', auth);
     return (
       <div>
         <UserInfo>
