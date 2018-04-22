@@ -8,14 +8,9 @@ export const posts = gql`
       brief
       cover
       category
-      like {
-        id
-        userId
-      }
-      thinking {
-        id
-        userId
-      }
+      isLike
+      likeCount
+      thinkingCount
     }
   }
 `;
@@ -28,16 +23,16 @@ export const post = gql`
       cover
       category
       status
+      updateTime
+      likeCount
+      thinkingCount
+      isLike
       detail {
         order
         type
         content
         happenTime
         postId
-      }
-      like {
-        id
-        userId
       }
     }
   }

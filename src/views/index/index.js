@@ -1,19 +1,16 @@
 import React, { Component } from 'react';
-// import { Button } from 'antd-mobile';
-import { Avatar, Icon } from 'antd';
+import { Icon } from 'antd';
 import PropTypes from 'prop-types';
-// import styled from 'styled-components';
 import { connect } from 'react-redux';
 import { graphql, compose } from 'react-apollo';
+import Avatar from '../../components/Avatar';
 
 import PostList from './PostList';
-import { posts, post } from '../../gqls/post';
+import { posts } from '../../gqls/post';
 import { Container, Topbar } from './index.style';
-import Comments from '../../components/Comments';
 
 class Index extends Component {
   static propTypes = {
-    // dispatch: PropTypes.func.isRequired,
     postsRes: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
   };
@@ -34,11 +31,9 @@ class Index extends Component {
         <Topbar>
           <Icon type="search" className="icon" />
           <div className="logo">logo</div>
-          <Avatar src={auth.avatarUrl} icon="user" className="avatar" />
+          <Avatar src={auth.avatarUrl} className="avatar" />
         </Topbar>
         <PostList posts={posts} />
-        {/* </Warp> */}
-        {/* <Comments /> */}
       </Container>
     );
   }

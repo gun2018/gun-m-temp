@@ -39,7 +39,7 @@ const Content = styled(Layout)`
     }
     > .time {
       font-size: ${px2rem(24)};
-      color: #B2B2B2;
+      color: #b2b2b2;
     }
   }
 `;
@@ -99,11 +99,8 @@ class PostList extends PureComponent {
   static propTypes = {
     posts: PropTypes.array.isRequired,
   };
-  state = {
-    test: 1,
-  };
+  state = {};
   render() {
-    console.log(this.state.test);
     const { posts } = this.props;
     return (
       <Fragment>
@@ -127,9 +124,9 @@ class PostList extends PureComponent {
               </Content>
               <Sider className="sider" breakpoint="sm">
                 <Icon type="heart" className="icon" />
-                <span>{post.like.length}</span>
+                <span>{post.likeCount}</span>
                 <Icon type="message" className="icon" />
-                <span>{post.thinking.length}</span>
+                <span>{post.thinkingCount}</span>
                 <Icon type="ellipsis" className="icon-more" />
               </Sider>
             </Layout>

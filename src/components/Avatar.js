@@ -14,8 +14,8 @@ const Wrap = styled.div`
   }
 `;
 
-const Avatar = ({ src, width, height }) => (
-  <Wrap width={width} height={height}>
+const Avatar = ({ src, width, height, className }) => (
+  <Wrap width={width} height={height} className={className}>
     <img src={src || user} alt="avatar" />
   </Wrap>
 );
@@ -23,9 +23,11 @@ Avatar.propTypes = {
   src: PropTypes.string.isRequired,
   width: PropTypes.string,
   height: PropTypes.string,
+  className: PropTypes.string,
 };
 Avatar.defaultProps = {
   width: px2rem(100),
   height: px2rem(100),
+  className: '',
 };
 export default Avatar;

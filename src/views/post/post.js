@@ -50,7 +50,7 @@ class Post extends Component {
           <div className="title">
             <h1>{post.title}</h1>
             <PostMeta>
-              <span className="from-now">{fromNow(post.creatTime)}</span>
+              <span className="from-now">{fromNow(post.updateTime)}</span>
             </PostMeta>
           </div>
         </PostHeader>
