@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import styled, { keyframes, css } from 'styled-components';
 import Button from '../../components/Button';
 import px2rem from '../../styles/px2rem';
+import PostEdit from './PostEdit';
 
 const FadeIn = keyframes`
   0% {
@@ -32,6 +33,11 @@ const Wrap = styled.div`
   .close {
     position: absolute;
     left: ${px2rem(30)};
+    bottom: ${px2rem(200)};
+  }
+  .edit {
+    position: absolute;
+    right: ${px2rem(30)};
     bottom: ${px2rem(200)};
   }
 `;
@@ -76,39 +82,54 @@ class PopUp extends PureComponent {
   };
   state = {
     activeTab: 1,
+    isEdit: true,
   };
   selectTab = itemValue => {
     this.setState({
       activeTab: itemValue,
     });
   };
+  toggleEdit = () => {
+    this.setState({
+      isEdit: !this.state.isEdit,
+    });
+  };
   render() {
     const { isShowPopUp, togglePopUp } = this.props;
-    const { activeTab } = this.state;
+    const { activeTab, isEdit } = this.state;
     return (
       <Wrap isShowPopUp={isShowPopUp}>
-        <Tabs>
-          {tabList.map(tab => (
-            // eslint-disable-next-line
-            <span
-              onClick={() => {
-                this.selectTab(tab.key);
-              }}
-              className={tab.key === activeTab ? 'active-tab' : ''}
-              key={tab.key}
-            >
-              {tab.value}
-            </span>
-          ))}
-        </Tabs>
-        <TabContent>
-          {activeTab === 0 && <div>待合并</div>}
-          {activeTab === 1 && <div>已合并</div>}
-          {activeTab === 2 && <div>已拒绝</div>}
-        </TabContent>
-        <Button className="close" onClick={togglePopUp}>
-          关闭
-        </Button>
+        {isEdit ? (
+          <PostEdit toggleEdit={this.toggleEdit} />
+        ) : (
+          <div>
+            <Tabs>
+              {tabList.map(tab => (
+                // eslint-disable-next-line
+                <span
+                  onClick={() => {
+                    this.selectTab(tab.key);
+                  }}
+                  className={tab.key === activeTab ? 'active-tab' : ''}
+                  key={tab.key}
+                >
+                  {tab.value}
+                </span>
+              ))}
+            </Tabs>
+            <TabContent>
+              {activeTab === 0 && <div>待合并</div>}
+              {activeTab === 1 && <div>已合并</div>}
+              {activeTab === 2 && <div>已拒绝</div>}
+            </TabContent>
+            <Button className="close" onClick={togglePopUp}>
+              关闭
+            </Button>
+            <Button className="edit" onClick={this.toggleEdit}>
+              编辑
+            </Button>
+          </div>
+        )}
       </Wrap>
     );
   }

@@ -26,7 +26,7 @@ class Post extends Component {
     location: PropTypes.object.isRequired,
   };
   state = {
-    isShowPopUp: false,
+    isShowPopUp: true,
   };
   get query() {
     return parseQuery(this.props.location.search);

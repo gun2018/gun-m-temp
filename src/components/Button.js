@@ -14,12 +14,18 @@ const Button = ({
   children,
   className,
   onClick,
+  onMouseDown,
   type,
 }) => (
   <button
     className={className}
     disabled={disabled}
-    onClick={onClick}
+    onClick={e => {
+      onClick(e);
+    }}
+    onMouseDown={e => {
+      onMouseDown(e);
+    }}
     style={{
       outline: 'none',
       border: 'none',
@@ -53,6 +59,7 @@ Button.propTypes = {
   disabled: PropTypes.bool,
   className: PropTypes.string,
   onClick: PropTypes.func,
+  onMouseDown: PropTypes.func,
   type: PropTypes.string,
 };
 Button.defaultProps = {
@@ -62,6 +69,7 @@ Button.defaultProps = {
   disabled: false,
   children: '',
   onClick: () => {},
+  onMouseDown: () => {},
   type: '',
 };
 export default Button;
