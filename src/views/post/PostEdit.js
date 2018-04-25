@@ -2,11 +2,11 @@ import React, { PureComponent, Fragment } from 'react';
 // import PropTypes from 'prop-types';
 import {
   convertToRaw,
-  convertFromRaw,
-  CompositeDecorator,
+  // convertFromRaw,
+  // CompositeDecorator,
   Editor,
   EditorState,
-  Modifier,
+  // Modifier,
   RichUtils,
 } from 'draft-js';
 import styled from 'styled-components';
@@ -19,7 +19,14 @@ const EditWrap = styled.div`
   color: #fff;
   margin: ${px2rem(20)};
   padding: ${px2rem(14)};
-  font-size: ${px2rem(100)};
+  font-size: ${px2rem(50)};
+  h2 {
+    margin-bottom: 0 !important;
+    color: #fff;
+  }
+  .RichEditor-blockquote {
+    background-color: red;
+  }
 `;
 
 // 行样式映射
@@ -33,43 +40,25 @@ const editorStyleMap = {
   },
 };
 
+function getBlockStyle(block) {
+  switch (block.getType()) {
+    case 'blockquote':
+      return 'RichEditor-blockquote';
+    default:
+      return null;
+  }
+}
 class PostEdit extends PureComponent {
   state = {
     editorState: EditorState.createEmpty(),
   };
   onInlineTypeSelect = typeName => {
-    const { editorState } = this.state;
-    const selection = editorState.getSelection();
-
-    const nextContentState = Object.keys(editorStyleMap).reduce(
-      (contentState, type) =>
-        Modifier.removeInlineStyle(contentState, selection, type),
-      editorState.getCurrentContent()
+    this.onChange(
+      RichUtils.toggleInlineStyle(this.state.editorState, typeName)
     );
-
-    let nextEditorState = EditorState.push(
-      editorState,
-      nextContentState,
-      'change-inline-style'
-    );
-
-    const currentStyle = editorState.getCurrentInlineStyle();
-
-    // Unset style override for current color.
-    if (selection.isCollapsed()) {
-      nextEditorState = currentStyle.reduce(
-        (state, color) => RichUtils.toggleInlineStyle(state, color),
-        nextEditorState
-      );
-    }
-
-    // If the color is being toggled on, apply it.
-    if (!currentStyle.has(typeName)) {
-      nextEditorState = RichUtils.toggleInlineStyle(nextEditorState, typeName);
-    }
-    this.onChange(nextEditorState);
-
-    // this.onChange(RichUtils.toggleInlineStyle(editorState, typeName));
+  };
+  onBlockTypeSelect = typeName => {
+    this.onChange(RichUtils.toggleBlockType(this.state.editorState, typeName));
   };
   onChange = editorState => {
     console.log('onChange', convertToRaw(editorState.getCurrentContent()));
@@ -82,6 +71,7 @@ class PostEdit extends PureComponent {
       <Fragment>
         <EditWrap onClick={this.focus}>
           <Editor
+            blockStyleFn={getBlockStyle}
             customStyleMap={editorStyleMap}
             editorState={editorState}
             ref={el => {
@@ -90,7 +80,10 @@ class PostEdit extends PureComponent {
             onChange={this.onChange}
           />
         </EditWrap>
-        <StyleSelectBar onInlineTypeSelect={this.onInlineTypeSelect} />
+        <StyleSelectBar
+          onInlineTypeSelect={this.onInlineTypeSelect}
+          onBlockTypeSelect={this.onBlockTypeSelect}
+        />
       </Fragment>
     );
   }
