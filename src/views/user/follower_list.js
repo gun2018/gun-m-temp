@@ -6,9 +6,7 @@ import { connect } from 'react-redux';
 
 import { followers, deleteFollower } from '../../gqls/user';
 import Loading from '../../components/Loading';
-import Avatar from '../../components/Avatar';
-import px2rem from '../../styles/px2rem';
-import Button from '../../components/Button';
+import UserList from './UserList';
 
 const Wrap = styled.div``;
 
@@ -35,7 +33,7 @@ class FollowerList extends Component {
   };
   render() {
     const { followersRes } = this.props;
-    const { followers, loading } = followersRes;
+    const { followers = [], loading } = followersRes;
     if (loading) return <Loading />;
     if (!followers || followers.length === 0)
       return <div>你还没有关注任何人哦</div>;
@@ -43,17 +41,20 @@ class FollowerList extends Component {
       <Fragment>
         <div>关注列表</div>
         <Wrap>
-          {followers.map(user => (
-            <div key={user.info.id}>
-              <span>{user.info.nickname}</span>
-              <Avatar
+          <UserList posts={followers} />
+          {/* {followers.map(user => (
+            <UserList key={user.info.id}>
+              <Avatar className="avatar"
                 src={user.info.avatarUrl}
-                width={px2rem(106)}
-                height={px2rem(106)}
-              />
-              <p>{user.info.signText}</p>
+                width={px2rem(80)}
+                height={px2rem(80)}
+                />
+              <div className="info">
+                <span>{user.info.nickname}</span>
+                <p>{user.info.signText}</p>
+              </div>
               {
-                <Button
+                <Button className="button"
                   onClick={async () => {
                     await this.cancelFollow(user.id);
                   }}
@@ -61,8 +62,8 @@ class FollowerList extends Component {
                   取消关注
                 </Button>
               }
-            </div>
-          ))}
+            </UserList>
+          ))} */}
         </Wrap>
       </Fragment>
     );
