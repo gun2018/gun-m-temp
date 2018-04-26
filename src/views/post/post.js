@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
 
@@ -12,7 +12,7 @@ import {
 import { fromNow } from '../../utils/date';
 import PopUp from './PopUp';
 import Loading from '../../components/Loading';
-import { post } from '../../gqls/post';
+import { post, crearePostPartCommit } from '../../gqls/post';
 import PostAndThinkingHeader from '../../components/PostAndThinkingHeader';
 import { parseQuery } from '../../utils/tools';
 
@@ -23,10 +23,29 @@ function escape(str) {
 class Post extends Component {
   static propTypes = {
     postRes: PropTypes.object.isRequired,
+    crearePostPartCommit: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired,
   };
   state = {
-    isShowPopUp: true,
+    isShowPopUp: false,
+    selectPostPart: '',
+  };
+  // 似乎是无意义的阻止
+  // componentWillReceiveProps(nextProps) {
+  //   const nextQuery = parseQuery(nextProps.location.search);
+  //   if (this.query.post_id === nextQuery.post_id) {
+  //     return false;
+  //   }
+  //   return true;
+  // }
+  onPostPartCommitSubmit = async ({ content }) => {
+    console.log('content', content);
+    // await this.props.crearePostPartCommit({
+    //   variables: {
+    //     input: {},
+    //   },
+    // });
   };
   get query() {
     return parseQuery(this.props.location.search);
@@ -42,10 +61,24 @@ class Post extends Component {
   // aaa = a => {
   //   console.log('长按事件start');
   // };
+  postPartClick = postPart => {
+    const { pathname } = this.props.history.location;
+
+    this.setState({
+      selectPostPart: postPart.content,
+    });
+    this.props.history.push(
+      `${pathname}?post_id=${this.query.post_id}&post_part_id=${postPart.id}`
+    );
+    this.togglePopUp();
+  };
   render() {
     const { post, loading } = this.props.postRes;
-    const { isShowPopUp } = this.state;
+    const { isShowPopUp, selectPostPart } = this.state;
+    const { location } = this.props;
     if (loading) return <Loading />;
+    console.log('render');
+
     return (
       <PageWrap>
         <PostWrap>
@@ -59,18 +92,34 @@ class Post extends Component {
             </div>
           </PostHeader>
           <PostDetail
-            onClick={this.togglePopUp}
-            // onTouchStart={this.aaa(1)}
-            // onTouchEnd={this.longPress(2)}
+
+          // onTouchStart={this.aaa(1)}
+          // onTouchEnd={this.longPress(2)}
           >
-            <div
-              dangerouslySetInnerHTML={{
-                __html: escape(post.detail.map(item => item.content).join('')),
-              }}
-            />
+            {post.detail.map(item => (
+              <div key={item.id}>
+                <span>{item.happenTime}</span>
+                <div
+                  onClick={() => {
+                    this.postPartClick(item);
+                  }}
+                  dangerouslySetInnerHTML={{
+                    __html: escape(item.content),
+                  }}
+                />
+              </div>
+            ))}
           </PostDetail>
         </PostWrap>
-        <PopUp isShowPopUp={isShowPopUp} togglePopUp={this.togglePopUp} />
+        {isShowPopUp && (
+          <PopUp
+            isShowPopUp={isShowPopUp}
+            togglePopUp={this.togglePopUp}
+            selectPostPart={selectPostPart}
+            onPostPartCommitSubmit={this.onPostPartCommitSubmit}
+            location={location}
+          />
+        )}
       </PageWrap>
     );
   }
@@ -84,6 +133,12 @@ const wrapper = compose(
       return {
         variables: { id: query.post_id },
       };
+    },
+  }),
+  graphql(crearePostPartCommit, {
+    name: 'crearePostPartCommit',
+    options: {
+      refetchQueries: ['postPartCommits'],
     },
   })
 );

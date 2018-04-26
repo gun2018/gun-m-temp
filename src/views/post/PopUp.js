@@ -1,9 +1,14 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { graphql, compose } from 'react-apollo';
 import styled, { keyframes, css } from 'styled-components';
 import Button from '../../components/Button';
 import px2rem from '../../styles/px2rem';
 import PostEdit from './PostEdit';
+import { postPartCommits } from '../../gqls/post';
+import { parseQuery } from '../../utils/tools';
+import Loading from '../../components/Loading';
+import Avatar from '../../components/Avatar';
 
 const FadeIn = keyframes`
   0% {
@@ -24,12 +29,6 @@ const Wrap = styled.div`
   right: 0;
   animation: 0.2s ${FadeIn} ease-in;
   background: rgba(0, 0, 0, 0.5);
-  display: none;
-  ${props =>
-    props.isShowPopUp &&
-    css`
-      display: block;
-    `};
   .close {
     position: absolute;
     left: ${px2rem(30)};
@@ -54,7 +53,9 @@ const Tabs = styled.div`
   }
 `;
 
-const TabContent = styled.div``;
+const TabContent = styled.div`
+  color: #fff;
+`;
 
 const tabList = [
   {
@@ -66,23 +67,25 @@ const tabList = [
     value: '已合并',
   },
   {
-    key: 2,
+    key: -1,
     value: '已拒绝',
   },
 ];
 
 class PopUp extends PureComponent {
   static propTypes = {
-    isShowPopUp: PropTypes.bool,
     togglePopUp: PropTypes.func,
+    selectPostPart: PropTypes.string,
+    onPostPartCommitSubmit: PropTypes.func.isRequired,
+    postPartCommitsRes: PropTypes.object.isRequired,
   };
   static defaultProps = {
-    isShowPopUp: false,
     togglePopUp: () => {},
+    selectPostPart: '',
   };
   state = {
     activeTab: 1,
-    isEdit: true,
+    isEdit: false,
   };
   selectTab = itemValue => {
     this.setState({
@@ -95,12 +98,26 @@ class PopUp extends PureComponent {
     });
   };
   render() {
-    const { isShowPopUp, togglePopUp } = this.props;
+    const { togglePopUp, selectPostPart, onPostPartCommitSubmit } = this.props;
     const { activeTab, isEdit } = this.state;
+    const { postPartCommits, loading } = this.props.postPartCommitsRes;
+    if (loading)
+      return (
+        <Wrap>
+          <Loading />
+        </Wrap>
+      );
+    const activePostPartCommits = postPartCommits.filter(
+      postPartCommit => postPartCommit.status === activeTab
+    );
     return (
-      <Wrap isShowPopUp={isShowPopUp}>
+      <Wrap>
         {isEdit ? (
-          <PostEdit toggleEdit={this.toggleEdit} />
+          <PostEdit
+            toggleEdit={this.toggleEdit}
+            selectPostPart={selectPostPart}
+            onPostPartCommitSubmit={onPostPartCommitSubmit}
+          />
         ) : (
           <div>
             <Tabs>
@@ -118,9 +135,17 @@ class PopUp extends PureComponent {
               ))}
             </Tabs>
             <TabContent>
-              {activeTab === 0 && <div>待合并</div>}
-              {activeTab === 1 && <div>已合并</div>}
-              {activeTab === 2 && <div>已拒绝</div>}
+              {activePostPartCommits.length === 0
+                ? '无'
+                : activePostPartCommits.map(postPartCommit => (
+                    <div key={postPartCommit.id}>
+                      <div>
+                        <span>{postPartCommit.user.nickname}</span>
+                        <Avatar src={postPartCommit.user.avatarUrl} />
+                      </div>
+                      {postPartCommit.commitName}
+                    </div>
+                  ))}
             </TabContent>
             <Button className="close" onClick={togglePopUp}>
               关闭
@@ -134,4 +159,17 @@ class PopUp extends PureComponent {
     );
   }
 }
-export default PopUp;
+
+const wrapper = compose(
+  graphql(postPartCommits, {
+    name: 'postPartCommitsRes',
+    options: props => {
+      const query = parseQuery(props.location.search);
+      return {
+        variables: { postPartId: query.post_part_id },
+      };
+    },
+  })
+);
+
+export default wrapper(PopUp);

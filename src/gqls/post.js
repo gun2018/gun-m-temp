@@ -28,12 +28,41 @@ export const post = gql`
       thinkingCount
       isLike
       detail {
-        order
-        type
+        id
         content
         happenTime
         postId
       }
+    }
+  }
+`;
+
+export const postPartCommits = gql`
+  query postPartCommits($postPartId: Int!) {
+    postPartCommits(postPartId: $postPartId) {
+      id
+      postId
+      postPartId
+      commitName
+      content
+      source
+      seq
+      happenTime
+      updateTime
+      status
+      user {
+        id
+        nickname
+        avatarUrl
+      }
+    }
+  }
+`;
+
+export const crearePostPartCommit = gql`
+  mutation crearePostPartCommit($input: AddPostPartCommitInput!) {
+    crearePostPartCommit(input: $input) {
+      id
     }
   }
 `;
