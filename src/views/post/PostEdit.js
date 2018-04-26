@@ -2,7 +2,7 @@ import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { Toast } from 'antd-mobile';
 import {
-  convertToRaw,
+  // convertToRaw,
   // convertFromRaw,
   // CompositeDecorator,
   Editor,
@@ -57,6 +57,7 @@ class PostEdit extends PureComponent {
   static propTypes = {
     selectPostPart: PropTypes.string,
     onPostPartCommitSubmit: PropTypes.func.isRequired,
+    togglePopUp: PropTypes.func.isRequired,
   };
   static defaultProps = {
     selectPostPart: '',
@@ -100,6 +101,7 @@ class PostEdit extends PureComponent {
   };
   focus = () => this.editor.focus();
   render() {
+    const { togglePopUp } = this.props;
     const { editorState, source } = this.state;
     // console.log('editorState', editorState);
     return (
@@ -128,6 +130,7 @@ class PostEdit extends PureComponent {
           />
         </div>
         <Button onClick={this.onSubmit}>提交</Button>
+        <Button onClick={togglePopUp}>关闭</Button>
       </Fragment>
     );
   }

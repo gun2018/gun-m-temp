@@ -1,14 +1,13 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
-import styled, { keyframes, css } from 'styled-components';
-import Button from '../../components/Button';
+import styled, { keyframes } from 'styled-components';
 import px2rem from '../../styles/px2rem';
 import PostEdit from './PostEdit';
+import CommitList from './CommitList';
 import { postPartCommits } from '../../gqls/post';
 import { parseQuery } from '../../utils/tools';
 import Loading from '../../components/Loading';
-import Avatar from '../../components/Avatar';
 
 const FadeIn = keyframes`
   0% {
@@ -41,56 +40,18 @@ const Wrap = styled.div`
   }
 `;
 
-const Tabs = styled.div`
-  margin-top: ${px2rem(80)};
-  color: #fff;
-  font-size: ${px2rem(28)};
-  display: flex;
-  flex-flow: row nowrap;
-  justify-content: space-around;
-  .active-tab {
-    color: #ed642a;
-  }
-`;
-
-const TabContent = styled.div`
-  color: #fff;
-`;
-
-const tabList = [
-  {
-    key: 0,
-    value: '待合并',
-  },
-  {
-    key: 1,
-    value: '已合并',
-  },
-  {
-    key: -1,
-    value: '已拒绝',
-  },
-];
-
 class PopUp extends PureComponent {
   static propTypes = {
-    togglePopUp: PropTypes.func,
+    togglePopUp: PropTypes.func.isRequired,
     selectPostPart: PropTypes.string,
     onPostPartCommitSubmit: PropTypes.func.isRequired,
     postPartCommitsRes: PropTypes.object.isRequired,
   };
   static defaultProps = {
-    togglePopUp: () => {},
     selectPostPart: '',
   };
   state = {
-    activeTab: 1,
     isEdit: false,
-  };
-  selectTab = itemValue => {
-    this.setState({
-      activeTab: itemValue,
-    });
   };
   toggleEdit = () => {
     this.setState({
@@ -99,7 +60,7 @@ class PopUp extends PureComponent {
   };
   render() {
     const { togglePopUp, selectPostPart, onPostPartCommitSubmit } = this.props;
-    const { activeTab, isEdit } = this.state;
+    const { isEdit } = this.state;
     const { postPartCommits, loading } = this.props.postPartCommitsRes;
     if (loading)
       return (
@@ -107,53 +68,21 @@ class PopUp extends PureComponent {
           <Loading />
         </Wrap>
       );
-    const activePostPartCommits = postPartCommits.filter(
-      postPartCommit => postPartCommit.status === activeTab
-    );
     return (
       <Wrap>
         {isEdit ? (
           <PostEdit
+            togglePopUp={togglePopUp}
             toggleEdit={this.toggleEdit}
             selectPostPart={selectPostPart}
             onPostPartCommitSubmit={onPostPartCommitSubmit}
           />
         ) : (
-          <div>
-            <Tabs>
-              {tabList.map(tab => (
-                // eslint-disable-next-line
-                <span
-                  onClick={() => {
-                    this.selectTab(tab.key);
-                  }}
-                  className={tab.key === activeTab ? 'active-tab' : ''}
-                  key={tab.key}
-                >
-                  {tab.value}
-                </span>
-              ))}
-            </Tabs>
-            <TabContent>
-              {activePostPartCommits.length === 0
-                ? '无'
-                : activePostPartCommits.map(postPartCommit => (
-                    <div key={postPartCommit.id}>
-                      <div>
-                        <span>{postPartCommit.user.nickname}</span>
-                        <Avatar src={postPartCommit.user.avatarUrl} />
-                      </div>
-                      {postPartCommit.commitName}
-                    </div>
-                  ))}
-            </TabContent>
-            <Button className="close" onClick={togglePopUp}>
-              关闭
-            </Button>
-            <Button className="edit" onClick={this.toggleEdit}>
-              编辑
-            </Button>
-          </div>
+          <CommitList
+            togglePopUp={togglePopUp}
+            postPartCommits={postPartCommits}
+            toggleEdit={this.toggleEdit}
+          />
         )}
       </Wrap>
     );
