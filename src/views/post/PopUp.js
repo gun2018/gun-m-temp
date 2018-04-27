@@ -5,6 +5,7 @@ import styled, { keyframes } from 'styled-components';
 import px2rem from '../../styles/px2rem';
 import PostEdit from './PostEdit';
 import CommitList from './CommitList';
+import CommitItem from './CommitItem';
 import { postPartCommits } from '../../gqls/post';
 import { parseQuery } from '../../utils/tools';
 import Loading from '../../components/Loading';
@@ -26,6 +27,7 @@ const Wrap = styled.div`
   bottom: 0;
   left: 0;
   right: 0;
+  color: #fff;
   animation: 0.2s ${FadeIn} ease-in;
   background: rgba(0, 0, 0, 0.5);
   .close {
@@ -39,6 +41,11 @@ const Wrap = styled.div`
     bottom: ${px2rem(200)};
   }
 `;
+const componentObj = {
+  COMMIT_LIST: 1,
+  POST_EDIT: 2,
+  COMMIT_ITEM: 3,
+};
 
 class PopUp extends PureComponent {
   static propTypes = {
@@ -51,16 +58,23 @@ class PopUp extends PureComponent {
     selectPostPart: '',
   };
   state = {
-    isEdit: false,
+    activeComponent: componentObj.COMMIT_LIST,
+    selectCommit: null,
   };
-  toggleEdit = () => {
+  onCommitItemClick = commitItem => {
     this.setState({
-      isEdit: !this.state.isEdit,
+      selectCommit: commitItem,
+    });
+    this.onSelectComponent(componentObj.COMMIT_ITEM);
+  };
+  onSelectComponent = value => {
+    this.setState({
+      activeComponent: value,
     });
   };
   render() {
     const { togglePopUp, selectPostPart, onPostPartCommitSubmit } = this.props;
-    const { isEdit } = this.state;
+    const { activeComponent, selectCommit } = this.state;
     const { postPartCommits, loading } = this.props.postPartCommitsRes;
     if (loading)
       return (
@@ -70,18 +84,27 @@ class PopUp extends PureComponent {
       );
     return (
       <Wrap>
-        {isEdit ? (
+        {activeComponent === componentObj.POST_EDIT && (
           <PostEdit
             togglePopUp={togglePopUp}
-            toggleEdit={this.toggleEdit}
+            selectComponent={this.selectComponent}
             selectPostPart={selectPostPart}
             onPostPartCommitSubmit={onPostPartCommitSubmit}
           />
-        ) : (
+        )}
+        {activeComponent === componentObj.COMMIT_LIST && (
           <CommitList
             togglePopUp={togglePopUp}
             postPartCommits={postPartCommits}
-            toggleEdit={this.toggleEdit}
+            onSelectComponent={this.onSelectComponent}
+            onCommitItemClick={this.onCommitItemClick}
+          />
+        )}
+        {activeComponent === componentObj.COMMIT_ITEM && (
+          <CommitItem
+            selectCommit={selectCommit}
+            onSelectComponent={this.onSelectComponent}
+            postPartCommits={postPartCommits}
           />
         )}
       </Wrap>

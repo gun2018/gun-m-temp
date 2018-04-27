@@ -39,7 +39,8 @@ const tabList = [
 class CommitList extends PureComponent {
   static propTypes = {
     togglePopUp: PropTypes.func.isRequired,
-    toggleEdit: PropTypes.func.isRequired,
+    onSelectComponent: PropTypes.func.isRequired,
+    onCommitItemClick: PropTypes.func.isRequired,
     postPartCommits: PropTypes.array,
   };
   static defaultProps = {
@@ -54,7 +55,12 @@ class CommitList extends PureComponent {
     });
   };
   render() {
-    const { togglePopUp, postPartCommits, toggleEdit } = this.props;
+    const {
+      togglePopUp,
+      postPartCommits,
+      onSelectComponent,
+      onCommitItemClick,
+    } = this.props;
     const { activeTab } = this.state;
     const activePostPartCommits = postPartCommits.filter(
       postPartCommit => postPartCommit.status === activeTab
@@ -80,7 +86,12 @@ class CommitList extends PureComponent {
             ? '无'
             : activePostPartCommits.map(postPartCommit => (
                 // eslint-disable-next-line
-                <div key={postPartCommit.id}>
+                <div
+                  key={postPartCommit.id}
+                  onClick={() => {
+                    onCommitItemClick(postPartCommit);
+                  }}
+                >
                   <div>
                     <span>{postPartCommit.user.nickname}</span>
                     <Avatar src={postPartCommit.user.avatarUrl} />
@@ -92,7 +103,12 @@ class CommitList extends PureComponent {
         <Button className="close" onClick={togglePopUp}>
           关闭
         </Button>
-        <Button className="edit" onClick={toggleEdit}>
+        <Button
+          className="edit"
+          onClick={() => {
+            onSelectComponent(2);
+          }}
+        >
           编辑
         </Button>
       </div>
