@@ -15,6 +15,7 @@ export const PostWrap = styled.div`
   height: 100%;
   overflow-x: hidden;
   overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
 `;
 
 export const PostHeader = styled.div`

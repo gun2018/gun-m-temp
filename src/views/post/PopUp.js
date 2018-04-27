@@ -28,7 +28,7 @@ const Wrap = styled.div`
   left: 0;
   right: 0;
   color: #fff;
-  animation: 0.2s ${FadeIn} ease-in;
+  animation: 0.2s ${FadeIn} ease-in-out;
   background: rgba(0, 0, 0, 0.5);
   .close {
     position: absolute;
