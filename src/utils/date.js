@@ -1,3 +1,5 @@
+import moment from 'moment';
+
 export function formatNumber(n) {
   // eslint-disable-next-line
   n = n.toString();
@@ -7,23 +9,30 @@ export function fromNow(date) {
   // eslint-disable-next-line
   date = typeof date === 'object' ? date : new Date(date);
   const monthDate = `${date.getMonth() + 1}月${date.getDate()}日`;
-  const hourMin = `${formatNumber(date.getHours())}:${formatNumber(date.getMinutes())}`;
+  const hourMin = `${formatNumber(date.getHours())}:${formatNumber(
+    date.getMinutes()
+  )}`;
 
   const now = new Date();
   const dateDiff = now.getDate() - date.getDate();
 
-  const minDiff = now.getFullYear() === date.getFullYear() 
-    ? (now - date) / 60000 
-    : 999999;
+  const minDiff =
+    now.getFullYear() === date.getFullYear() ? (now - date) / 60000 : 999999;
 
   const timeSection = [1, 60, 1440, 2880, 4320, 525600];
-  const timeTextArr = ['minutesBefore', 'hourBefore', 'yesterdayBefore', 'dayBeforeYesterday', 'date'];
+  const timeTextArr = [
+    'minutesBefore',
+    'hourBefore',
+    'yesterdayBefore',
+    'dayBeforeYesterday',
+    'date',
+  ];
   const formatText = {
-    'minutesBefore': `${Math.floor(minDiff)}分钟前`,
-    'hourBefore': `${Math.floor(minDiff / 60)}小时前`,
-    'yesterdayBefore': `昨天 ${hourMin}`,
-    'dayBeforeYesterday': `前天 ${hourMin}`,
-    'date': `${date.getFullYear()}年${monthDate}`,
+    minutesBefore: `${Math.floor(minDiff)}分钟前`,
+    hourBefore: `${Math.floor(minDiff / 60)}小时前`,
+    yesterdayBefore: `昨天 ${hourMin}`,
+    dayBeforeYesterday: `前天 ${hourMin}`,
+    date: `${date.getFullYear()}年${monthDate}`,
   };
 
   let dateFormat = '刚刚';
@@ -38,4 +47,10 @@ export function fromNow(date) {
   });
 
   return dateFormat;
+}
+
+export function formateDate(date, rule) {
+  // eslint-disable-next-line
+  date = typeof date === 'object' ? date : new Date(date);
+  return moment(date).format(rule);
 }

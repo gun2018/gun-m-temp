@@ -48,12 +48,14 @@ export const postPartCommits = gql`
       source
       seq
       happenTime
+      createTime
       updateTime
       status
       user {
         id
         nickname
         avatarUrl
+        signText
       }
     }
   }

@@ -4,9 +4,11 @@ import styled from 'styled-components';
 import px2rem from '../../styles/px2rem';
 import Avatar from '../../components/Avatar';
 import Button from '../../components/Button';
+import { formateDate } from '../../utils/date';
 
 const Tabs = styled.div`
   margin-top: ${px2rem(80)};
+  margin-bottom: ${px2rem(120)};
   color: #fff;
   font-size: ${px2rem(28)};
   display: flex;
@@ -35,6 +37,39 @@ const tabList = [
     value: '已拒绝',
   },
 ];
+
+const Item = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  margin-bottom: ${px2rem(24)};
+  box-sizing: border-box;
+  padding: 0 ${px2rem(64)};
+  align-items: flex-end;
+  .commit-info {
+    flex: 1;
+    margin-left: ${px2rem(16)};
+    padding: ${px2rem(16)} ${px2rem(28)};
+    color: #000;
+    background-color: #fff;
+    border-radius: 8px;
+    .user-wrap {
+      margin-bottom: ${px2rem(30)};
+      .nickname {
+        font-size: ${px2rem(26)};
+        color: #555567;
+      }
+      .update-time {
+        font-size: ${px2rem(18)};
+        margin-left: ${px2rem(6)};
+        color: #555567;
+      }
+    }
+    .commit-name {
+      margin-bottom: 0;
+      font-size: ${px2rem(30)};
+    }
+  }
+`;
 
 class CommitList extends PureComponent {
   static propTypes = {
@@ -86,18 +121,25 @@ class CommitList extends PureComponent {
             ? '无'
             : activePostPartCommits.map(postPartCommit => (
                 // eslint-disable-next-line
-                <div
+                <Item
                   key={postPartCommit.id}
                   onClick={() => {
                     onCommitItemClick(postPartCommit);
                   }}
                 >
-                  <div>
-                    <span>{postPartCommit.user.nickname}</span>
-                    <Avatar src={postPartCommit.user.avatarUrl} />
+                  <Avatar src={postPartCommit.user.avatarUrl} />
+                  <div className="commit-info">
+                    <div className="user-wrap">
+                      <span className="nickname">
+                        {postPartCommit.user.nickname}
+                      </span>
+                      <span className="update-time">
+                        {formateDate(postPartCommit.updateTime, 'YYYY/MM/DD')}
+                      </span>
+                    </div>
+                    <p className="commit-name">{postPartCommit.commitName}</p>
                   </div>
-                  {postPartCommit.commitName}
-                </div>
+                </Item>
               ))}
         </TabContent>
         <Button className="close" onClick={togglePopUp}>

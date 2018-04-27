@@ -28,7 +28,7 @@ class Post extends Component {
     history: PropTypes.object.isRequired,
   };
   state = {
-    isShowPopUp: false,
+    isShowPopUp: true,
     selectPostPart: '',
   };
   // 似乎是无意义的阻止
@@ -77,7 +77,6 @@ class Post extends Component {
     const { isShowPopUp, selectPostPart } = this.state;
     const { location } = this.props;
     if (loading) return <Loading />;
-    console.log('render');
 
     return (
       <PageWrap>

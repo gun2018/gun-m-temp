@@ -1,6 +1,9 @@
 body {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
 }
 a {
   text-decoration: none;
+}
+p {
+  margin: 0;
 }
