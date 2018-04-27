@@ -20,7 +20,9 @@ class FollowerList extends Component {
   static defaultProps = {
     followersRes: [],
   };
-  state = {};
+  state = {
+    listsType: 'follower'
+  };
 
   cancelFollow = async id => {
     await this.props.deleteFollower({
@@ -41,29 +43,7 @@ class FollowerList extends Component {
       <Fragment>
         <div>关注列表</div>
         <Wrap>
-          <UserList posts={followers} />
-          {/* {followers.map(user => (
-            <UserList key={user.info.id}>
-              <Avatar className="avatar"
-                src={user.info.avatarUrl}
-                width={px2rem(80)}
-                height={px2rem(80)}
-                />
-              <div className="info">
-                <span>{user.info.nickname}</span>
-                <p>{user.info.signText}</p>
-              </div>
-              {
-                <Button className="button"
-                  onClick={async () => {
-                    await this.cancelFollow(user.id);
-                  }}
-                >
-                  取消关注
-                </Button>
-              }
-            </UserList>
-          ))} */}
+          <UserList lists={followers} listsType={this.state.listsType} />
         </Wrap>
       </Fragment>
     );

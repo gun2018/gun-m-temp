@@ -28,15 +28,16 @@ const List = styled.div`
 
 class UserList extends PureComponent {
   static propTypes = {
-    followers: PropTypes.array.isRequired,
+    lists: PropTypes.array.isRequired,
+    listsType: PropTypes.string.isRequired
   };
   state = {};
   render() {
-    const { followers } = this.props;
-    console.log('followers', this.followers);
+    const { lists, listsType } = this.props;
+    console.log('followers', lists);
     return (
       <Fragment>
-        {/* {followers.map(user => (
+        {lists.map(user => (
           <List key={user.info.id}>
             <Avatar className="avatar"
               src={user.info.avatarUrl}
@@ -47,7 +48,7 @@ class UserList extends PureComponent {
               <span>{user.info.nickname}</span>
               <p>{user.info.signText}</p>
             </div>
-            {
+            {listsType === 'follower' &&
               <Button className="button"
                 onClick={async () => {
                   await this.cancelFollow(user.id);
@@ -57,7 +58,7 @@ class UserList extends PureComponent {
               </Button>
             }
           </List>
-        ))} */}
+        ))}
       </Fragment>
     )
   }
