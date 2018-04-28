@@ -6,8 +6,9 @@ import px2rem from '../../styles/px2rem';
 import PostEdit from './PostEdit';
 import CommitList from './CommitList';
 import CommitItem from './CommitItem';
+import CommitDIff from './CommitDiff';
 import { postPartCommits } from '../../gqls/post';
-import { parseQuery } from '../../utils/tools';
+import { parseQuery, getDiffHTML } from '../../utils/tools';
 import Loading from '../../components/Loading';
 
 const FadeIn = keyframes`
@@ -45,21 +46,23 @@ const componentObj = {
   COMMIT_LIST: 1,
   POST_EDIT: 2,
   COMMIT_ITEM: 3,
+  COMMIT_DIFF: 4,
 };
 
 class PopUp extends PureComponent {
   static propTypes = {
     togglePopUp: PropTypes.func.isRequired,
-    selectPostPart: PropTypes.string,
+    selectPostPart: PropTypes.object,
     onPostPartCommitSubmit: PropTypes.func.isRequired,
     postPartCommitsRes: PropTypes.object.isRequired,
   };
   static defaultProps = {
-    selectPostPart: '',
+    selectPostPart: {},
   };
   state = {
     activeComponent: componentObj.COMMIT_LIST,
     selectCommit: null,
+    editDiffObj: null,
   };
   onCommitItemClick = commitItem => {
     this.setState({
@@ -72,9 +75,30 @@ class PopUp extends PureComponent {
       activeComponent: value,
     });
   };
+  onEditResultSubmit = ({ content, source, commitName }) => {
+    const { selectPostPart } = this.props;
+    const diffHTML = getDiffHTML(selectPostPart.content, content);
+    this.setState({
+      editDiffObj: {
+        content,
+        diffHTML,
+        source,
+        commitName,
+      },
+    });
+    this.onSelectComponent(componentObj.COMMIT_DIFF);
+  };
+  onCommitDiffConfirm = async () => {
+    const { content, source, commitName } = this.state.editDiffObj;
+    await this.props.onPostPartCommitSubmit({
+      content,
+      source,
+      commitName,
+    });
+  };
   render() {
-    const { togglePopUp, selectPostPart, onPostPartCommitSubmit } = this.props;
-    const { activeComponent, selectCommit } = this.state;
+    const { togglePopUp, selectPostPart } = this.props;
+    const { activeComponent, selectCommit, editDiffObj } = this.state;
     const { postPartCommits, loading } = this.props.postPartCommitsRes;
     if (loading)
       return (
@@ -89,7 +113,7 @@ class PopUp extends PureComponent {
             togglePopUp={togglePopUp}
             selectComponent={this.selectComponent}
             selectPostPart={selectPostPart}
-            onPostPartCommitSubmit={onPostPartCommitSubmit}
+            onEditResultSubmit={this.onEditResultSubmit}
           />
         )}
         {activeComponent === componentObj.COMMIT_LIST && (
@@ -105,6 +129,12 @@ class PopUp extends PureComponent {
             selectCommit={selectCommit}
             onSelectComponent={this.onSelectComponent}
             postPartCommits={postPartCommits}
+          />
+        )}
+        {activeComponent === componentObj.COMMIT_DIFF && (
+          <CommitDIff
+            editDiffObj={editDiffObj}
+            onCommitDiffConfirm={this.onCommitDiffConfirm}
           />
         )}
       </Wrap>

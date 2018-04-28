@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
+import { connect } from 'react-redux';
 
 import {
   PageWrap,
@@ -28,8 +29,8 @@ class Post extends Component {
     history: PropTypes.object.isRequired,
   };
   state = {
-    isShowPopUp: true,
-    selectPostPart: '',
+    isShowPopUp: false,
+    selectPostPart: null,
   };
   // 似乎是无意义的阻止
   // componentWillReceiveProps(nextProps) {
@@ -39,13 +40,23 @@ class Post extends Component {
   //   }
   //   return true;
   // }
-  onPostPartCommitSubmit = async ({ content }) => {
-    console.log('content', content);
-    // await this.props.crearePostPartCommit({
-    //   variables: {
-    //     input: {},
-    //   },
-    // });
+  onPostPartCommitSubmit = async ({ content, source, commitName }) => {
+    const { selectPostPart } = this.state;
+    const { auth } = this.props;
+    await this.props.crearePostPartCommit({
+      variables: {
+        input: {
+          content,
+          source,
+          commitName,
+          postId: this.query.post_id,
+          userId: auth.id,
+          postPartId: selectPostPart.id,
+          seq: selectPostPart.commitCount + 1,
+          status: 0,
+        },
+      },
+    });
   };
   get query() {
     return parseQuery(this.props.location.search);
@@ -65,7 +76,7 @@ class Post extends Component {
     const { pathname } = this.props.history.location;
 
     this.setState({
-      selectPostPart: postPart.content,
+      selectPostPart: postPart,
     });
     this.props.history.push(
       `${pathname}?post_id=${this.query.post_id}&post_part_id=${postPart.id}`
@@ -124,7 +135,14 @@ class Post extends Component {
   }
 }
 
+function select(state) {
+  return {
+    auth: state.auth,
+  };
+}
+
 const wrapper = compose(
+  connect(select),
   graphql(post, {
     name: 'postRes',
     options: props => {

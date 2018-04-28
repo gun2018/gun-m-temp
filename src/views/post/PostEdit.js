@@ -22,7 +22,7 @@ const EditWrap = styled.div`
   color: #fff;
   margin: ${px2rem(20)};
   padding: ${px2rem(14)};
-  font-size: ${px2rem(50)};
+  font-size: ${px2rem(30)};
   h2 {
     margin-bottom: 0 !important;
     color: #fff;
@@ -47,28 +47,31 @@ function getBlockStyle(block) {
   switch (block.getType()) {
     case 'blockquote':
       return 'RichEditor-blockquote';
-    case 'header-two':
-      return 'tttttttt'; // 通过这样的方式加样式
+    // case 'header-two':
+    //   return 'tttttttt'; // 通过这样的方式加样式
     default:
       return null;
   }
 }
 class PostEdit extends PureComponent {
   static propTypes = {
-    selectPostPart: PropTypes.string,
-    onPostPartCommitSubmit: PropTypes.func.isRequired,
+    selectPostPart: PropTypes.object,
+    onEditResultSubmit: PropTypes.func.isRequired,
     togglePopUp: PropTypes.func.isRequired,
   };
   static defaultProps = {
-    selectPostPart: '',
+    selectPostPart: {},
   };
   state = {
-    editorState: this.props.selectPostPart
-      ? EditorState.createWithContent(
-          convertFromHTML(this.props.selectPostPart)
-        )
-      : EditorState.createEmpty(),
+    editorState:
+      this.props.selectPostPart && this.props.selectPostPart.content
+        ? EditorState.createWithContent(
+            convertFromHTML(this.props.selectPostPart.content)
+          )
+        : EditorState.createEmpty(),
     // editorState: EditorState.createEmpty(),
+    commitName: '',
+    source: '',
   };
   onInlineTypeSelect = typeName => {
     this.onChange(
@@ -83,15 +86,16 @@ class PostEdit extends PureComponent {
     this.setState({ editorState });
   };
   onSubmit = async () => {
-    const { editorState, source } = this.state;
+    const { editorState, source, commitName } = this.state;
     if (!source) {
       Toast.info('请填写信息来源');
       return;
     }
     const content = convertToHTML(editorState.getCurrentContent());
-    await this.props.onPostPartCommitSubmit({
+    await this.props.onEditResultSubmit({
       content,
       source,
+      commitName,
     });
   };
   setSource = e => {
@@ -99,10 +103,15 @@ class PostEdit extends PureComponent {
       source: e.target.value,
     });
   };
+  serCommmitName = e => {
+    this.setState({
+      commitName: e.target.value,
+    });
+  };
   focus = () => this.editor.focus();
   render() {
     const { togglePopUp } = this.props;
-    const { editorState, source } = this.state;
+    const { editorState, source, commitName } = this.state;
     // console.log('editorState', editorState);
     return (
       <Fragment>
@@ -127,6 +136,15 @@ class PostEdit extends PureComponent {
             value={source}
             onChange={this.setSource}
             placeholder="输入信息来源"
+            style={{ color: '#000' }}
+          />
+        </div>
+        <div>
+          提交简介：<input
+            value={commitName}
+            onChange={this.serCommmitName}
+            placeholder="为你的提交想一个总结名吧！"
+            style={{ color: '#000' }}
           />
         </div>
         <Button onClick={this.onSubmit}>提交</Button>

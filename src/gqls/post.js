@@ -30,6 +30,7 @@ export const post = gql`
       detail {
         id
         content
+        commitCount
         happenTime
         postId
       }

@@ -41,7 +41,7 @@ const Wrap = styled.div`
 const UserWrap = styled.div`
   display: flex;
   flex-flow: row nowrap;
-  padding-top: ${px2rem(120)};
+  margin-top: ${px2rem(120)};
   .user-info {
     margin-left: ${px2rem(40)};
   }
