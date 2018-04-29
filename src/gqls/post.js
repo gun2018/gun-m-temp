@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const posts = gql`
-  query posts {
-    posts(status: 1) {
+  query posts($authorId: Int) {
+    posts(authorId: $authorId, status: 1) {
       id
       title
       brief
@@ -30,7 +30,7 @@ export const post = gql`
       detail {
         id
         content
-        commitCount
+        mergeCount
         happenTime
         postId
       }
@@ -39,10 +39,11 @@ export const post = gql`
 `;
 
 export const postPartCommits = gql`
-  query postPartCommits($postPartId: Int!) {
-    postPartCommits(postPartId: $postPartId) {
+  query postPartCommits($userId: Int, $postPartId: Int) {
+    postPartCommits(userId: $userId, postPartId: $postPartId) {
       id
       postId
+      userId
       postPartId
       commitName
       content

@@ -52,7 +52,7 @@ class Post extends Component {
           postId: this.query.post_id,
           userId: auth.id,
           postPartId: selectPostPart.id,
-          seq: selectPostPart.commitCount + 1,
+          seq: selectPostPart.mergeCount + 1,
           status: 0,
         },
       },

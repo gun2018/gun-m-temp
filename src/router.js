@@ -6,6 +6,8 @@ import Message from './views/message/message';
 import Thinking from './views/thinking/thinking';
 import FollowerList from './views/user/follower_list';
 import FanList from './views/user/fan_list';
+import MyPost from './views/user/my_post';
+import MyCommit from './views/user/my_commit';
 
 const router = [
   {
@@ -47,6 +49,16 @@ const router = [
     path: '/followers',
     isShowFooter: false,
     component: FollowerList,
+  },
+  {
+    path: '/my-commit',
+    isShowFooter: false,
+    component: MyCommit,
+  },
+  {
+    path: '/my-post',
+    isShowFooter: false,
+    component: MyPost,
   },
 ];
 

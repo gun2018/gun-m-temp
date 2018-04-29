@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { NavLink } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { compose } from 'react-apollo';
 import Avatar from '../../components/Avatar';
 import px2rem from '../../styles/px2rem';
-import { NavLink } from 'react-router-dom';
 
 const UserInfo = styled.div``;
 
@@ -27,15 +27,18 @@ class UserCenter extends Component {
           <p>{auth.nickname}</p>
           <p>{auth.signText}</p>
           <div>
-            <NavLink to="/fans">
-              <span>粉丝: {auth.fanCount}</span>
-            </NavLink>
-            <NavLink to="/followers">
-              <span>关注: {auth.followerCount}</span>
-            </NavLink>
+            <NavLink to="/fans">粉丝: {auth.fanCount}</NavLink>
+            <NavLink to="/followers">关注: {auth.followerCount}</NavLink>
           </div>
         </UserInfo>
-        <h3>个人中心</h3>
+        <div>
+          <p>
+            <NavLink to="/my-post">我发起的文章</NavLink>
+          </p>
+          <p>
+            <NavLink to="/my-commit">我提交的合并请求</NavLink>
+          </p>
+        </div>
       </div>
     );
   }
