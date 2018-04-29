@@ -20,9 +20,7 @@ class FanList extends Component {
   static defaultProps = {
     fansRes: [],
   };
-  state = {
-    listsType: fans
-  };
+  state = {};
   render() {
     const { fansRes } = this.props;
     const { fans, loading } = fansRes;
@@ -32,7 +30,7 @@ class FanList extends Component {
       <Fragment>
         <div>粉丝列表</div>
         <Wrap>
-          <UserList lists={fans} listsType={this.state.listsType} />
+          <UserList lists={fans} />
         </Wrap>
       </Fragment>
     );

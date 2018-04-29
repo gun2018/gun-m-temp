@@ -11,6 +11,7 @@ const List = styled.div`
   height: ${px2rem(120)};
   padding: ${px2rem(20)};
   box-sizing: border-box;
+  border-bottom: ${px2rem(1)} #EFEFF5 solid;
   > .avatar {
     float: left;
   }
@@ -29,11 +30,10 @@ const List = styled.div`
 class UserList extends PureComponent {
   static propTypes = {
     lists: PropTypes.array.isRequired,
-    listsType: PropTypes.string.isRequired
   };
   state = {};
   render() {
-    const { lists, listsType } = this.props;
+    const { lists } = this.props;
     console.log('followers', lists);
     return (
       <Fragment>
@@ -48,7 +48,7 @@ class UserList extends PureComponent {
               <span>{user.info.nickname}</span>
               <p>{user.info.signText}</p>
             </div>
-            {listsType === 'follower' &&
+            {
               <Button className="button"
                 onClick={async () => {
                   await this.cancelFollow(user.id);

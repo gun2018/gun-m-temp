@@ -20,9 +20,7 @@ class FollowerList extends Component {
   static defaultProps = {
     followersRes: [],
   };
-  state = {
-    listsType: 'follower'
-  };
+  state = {};
 
   cancelFollow = async id => {
     await this.props.deleteFollower({
@@ -43,7 +41,7 @@ class FollowerList extends Component {
       <Fragment>
         <div>关注列表</div>
         <Wrap>
-          <UserList lists={followers} listsType={this.state.listsType} />
+          <UserList lists={followers} />
         </Wrap>
       </Fragment>
     );
