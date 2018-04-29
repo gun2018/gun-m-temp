@@ -6,6 +6,7 @@ export const user = gql`
       id
       status
       nickname
+      signText
       avatarUrl
       country
       province

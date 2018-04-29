@@ -2,6 +2,7 @@ import React, { PureComponent } from 'react';
 // import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
+import PropTypes from 'prop-types';
 
 import px2rem from '../styles/px2rem';
 
@@ -20,7 +21,7 @@ const Wrap = styled.div`
 `;
 const Item = styled.div`
   a {
-    color: #000;
+    color: ${props => props.color};
   }
 `;
 
@@ -43,12 +44,16 @@ const BAR_DATA = [
 ];
 
 class FooterBar extends PureComponent {
+  static propTypes = {
+    path: PropTypes.string.isRequired,
+  }
   state = {};
   render() {
+    const { path } = this.props;
     return (
       <Wrap>
         {BAR_DATA.map(item => (
-          <Item key={item.icon}>
+          <Item key={item.icon} color={path === item.href ? 'red' : '#000'}>
             <NavLink to={item.href}>{item.name}</NavLink>
           </Item>
         ))}
