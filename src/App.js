@@ -72,6 +72,7 @@ class App extends Component {
   render() {
     const { auth } = this.props;
     if (!auth.id) return '登录中';
+    console.log('history', history);
     return (
       <Fragment>
         <Router history={history}>
@@ -84,7 +85,7 @@ class App extends Component {
                   render={props => (
                     <Fragment>
                       <Component {...props} />
-                      {isShowFooter && <FooterBar />}
+                      {isShowFooter && <FooterBar path={history.location.pathname} />}
                     </Fragment>
                   )}
                   exact={exact}

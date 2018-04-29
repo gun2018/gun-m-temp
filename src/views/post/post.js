@@ -84,6 +84,7 @@ class Post extends Component {
     this.togglePopUp();
   };
   render() {
+    console.log('post.js:', this.props);
     const { post, loading } = this.props.postRes;
     const { isShowPopUp, selectPostPart } = this.state;
     const { location } = this.props;
