@@ -12,6 +12,7 @@ export function parseQuery(query) {
   if (quertArr) {
     quertArr.forEach(item => {
       const itemArr = item.split('=');
+      // eslint-disable-next-line
       map[itemArr[0]] = itemArr[1];
     });
   }

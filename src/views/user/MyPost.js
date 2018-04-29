@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { graphql, compose } from 'react-apollo';
@@ -8,7 +8,7 @@ import Loading from '../../components/Loading';
 
 const Wrap = styled.div``;
 
-class MyPost extends Component {
+class MyPost extends PureComponent {
   static propTypes = {
     postsRes: PropTypes.object.isRequired,
   };

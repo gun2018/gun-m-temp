@@ -6,6 +6,10 @@ import { connect } from 'react-redux';
 import { compose } from 'react-apollo';
 import Avatar from '../../components/Avatar';
 import px2rem from '../../styles/px2rem';
+import ActionTabs from './ActionTabs';
+import MyPost from './MyPost';
+import MyCommit from './MyCommit';
+import MyThinking from './MyThinking';
 
 const UserInfo = styled.div``;
 
@@ -13,9 +17,17 @@ class UserCenter extends Component {
   static propTypes = {
     auth: PropTypes.object.isRequired,
   };
-  state = {};
+  state = {
+    activeTab: 'post',
+  };
+  onActionTabClick = activeTab => {
+    this.setState({
+      activeTab,
+    });
+  };
   render() {
     const { auth } = this.props;
+    const { activeTab } = this.state;
     return (
       <div>
         <UserInfo>
@@ -32,12 +44,15 @@ class UserCenter extends Component {
           </div>
         </UserInfo>
         <div>
-          <p>
-            <NavLink to="/my-post">我发起的文章</NavLink>
-          </p>
-          <p>
-            <NavLink to="/my-commit">我提交的合并请求</NavLink>
-          </p>
+          <ActionTabs
+            onActionTabClick={this.onActionTabClick}
+            activeTab={activeTab}
+          />
+          {activeTab === 'post' && <MyPost />}
+          {activeTab === 'commit' && <MyCommit />}
+          {activeTab === 'thinking' && <MyThinking />}
+          {activeTab === 'comment' && <div />}
+          {activeTab === 'follow' && <div />}
         </div>
       </div>
     );

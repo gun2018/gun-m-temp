@@ -1,9 +1,10 @@
 import gql from 'graphql-tag';
 
 export const thinkings = gql`
-  query thinkings($postId: Int!) {
-    thinkings(postId: $postId, status: 1) {
+  query thinkings($postId: Int, $userId: Int) {
+    thinkings(postId: $postId, userId: $userId, status: 1) {
       id
+      userId
       postId
       content
       createTime
