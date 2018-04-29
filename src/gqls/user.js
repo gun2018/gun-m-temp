@@ -1,5 +1,24 @@
 import gql from 'graphql-tag';
 
+export const user = gql`
+  query user($id: Int!) {
+    user(id: $id) {
+      id
+      status
+      nickname
+      avatarUrl
+      country
+      province
+      city
+      sex
+      fanCount
+      followerCount
+      commitCount
+      postCount
+    }
+  }
+`;
+
 export const fans = gql`
   query fans($userId: Int!) {
     fans(userId: $userId, status: 1) {
