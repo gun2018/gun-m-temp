@@ -2,21 +2,83 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
 import { connect } from 'react-redux';
-
-import {
-  PageWrap,
-  PostWrap,
-  PostDetail,
-  PostHeader,
-  PostMeta,
-} from './post.style';
-import { fromNow } from '../../utils/date';
+import styled from 'styled-components';
+import { fromNow, formateDate } from '../../utils/date';
 import PopUp from './PopUp';
 import Loading from '../../components/Loading';
 import { post, crearePostPartCommit } from '../../gqls/post';
 import PostAndThinkingHeader from '../../components/PostAndThinkingHeader';
 import { parseQuery } from '../../utils/tools';
+import px2rem from '../../styles/px2rem';
 
+const PageWrap = styled.div`
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+`;
+
+const PostWrap = styled.div`
+  width: 100%;
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+`;
+
+const PostHeader = styled.h1`
+  font-size: ${px2rem(30)};
+  padding: 0 ${px2rem(80)};
+  margin-bottom: ${px2rem(50)};
+`;
+
+const PostDetail = styled.div`
+  padding: ${px2rem(30)} ${px2rem(20)} 0;
+`;
+const PostDetailItem = styled.div`
+  display: flex;
+  flex-flow: row nowrap;
+  .date {
+    color: #ed642a;
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    line-height: ${px2rem(50)};
+    font-size: ${px2rem(16)};
+    &::before {
+      content: '';
+      display: inline-block;
+      width: ${px2rem(22)};
+      height: ${px2rem(22)};
+      border-radius: 50%;
+      background-color: #ed642a;
+      order: 1;
+    }
+    &::after {
+      margin-bottom: ${px2rem(10)};
+      flex: 1;
+      order: 2;
+      content: '';
+      display: inline-block;
+      width: 1px;
+      /* height: 100%; */
+      background-color: #e7e7f0;
+    }
+  }
+  .content {
+    font-size: ${px2rem(24)};
+    font-weight: 600;
+    margin: ${px2rem(-30)} 0 ${px2rem(60)} ${px2rem(20)};
+    p {
+      margin-bottom: ${px2rem(14)};
+    }
+    img {
+      width: 100%;
+    }
+  }
+`;
 function escape(str) {
   return str.replace(/<\/script/g, '<\\/script').replace(/<!--/g, '<\\!--');
 }
@@ -93,24 +155,20 @@ class Post extends Component {
     return (
       <PageWrap>
         <PostWrap>
-          <PostAndThinkingHeader postId={this.query.post_id} />
-          <PostHeader style={{ backgroundImage: `url(${post.title.cover})` }}>
-            <div className="title">
-              <h1>{post.title}</h1>
-              <PostMeta>
-                <span className="from-now">{fromNow(post.updateTime)}</span>
-              </PostMeta>
-            </div>
-          </PostHeader>
+          <PostAndThinkingHeader activeTab="post" postId={this.query.post_id} />
+          <PostHeader>{post.title}</PostHeader>
           <PostDetail
 
           // onTouchStart={this.aaa(1)}
           // onTouchEnd={this.longPress(2)}
           >
             {post.detail.map(item => (
-              <div key={item.id}>
-                <span>{item.happenTime}</span>
+              <PostDetailItem key={item.id}>
+                <div className="date">
+                  {formateDate(item.happenTime, 'YYYY/MM/DD')}
+                </div>
                 <div
+                  className="content"
                   onClick={() => {
                     this.postPartClick(item);
                   }}
@@ -118,7 +176,7 @@ class Post extends Component {
                     __html: escape(item.content),
                   }}
                 />
-              </div>
+              </PostDetailItem>
             ))}
           </PostDetail>
         </PostWrap>

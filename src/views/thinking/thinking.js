@@ -58,7 +58,10 @@ class Thingking extends Component {
     if (!thinkings) return <div>没有找到您需要的内容</div>;
     return (
       <div>
-        <PostAndThinkingHeader postId={this.query.post_id} />
+        <PostAndThinkingHeader
+          activeTab="thinking"
+          postId={this.query.post_id}
+        />
         {thinkings.map(thinking => (
           <div key={thinking.id}>
             <div dangerouslySetInnerHTML={{ __html: thinking.content }} />
