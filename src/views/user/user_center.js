@@ -11,6 +11,9 @@ import MyPost from './MyPost';
 import MyCommit from './MyCommit';
 import MyThinking from './MyThinking';
 
+const Wrap = styled.div`
+  padding: ${px2rem(20)} ${px2rem(20)};
+`;
 const UserInfo = styled.div``;
 
 class UserCenter extends Component {
@@ -29,7 +32,7 @@ class UserCenter extends Component {
     const { auth } = this.props;
     const { activeTab } = this.state;
     return (
-      <div>
+      <Wrap>
         <UserInfo>
           <Avatar
             src={auth.avatarUrl}
@@ -54,7 +57,7 @@ class UserCenter extends Component {
           {activeTab === 'comment' && <div />}
           {activeTab === 'follow' && <div />}
         </div>
-      </div>
+      </Wrap>
     );
   }
 }

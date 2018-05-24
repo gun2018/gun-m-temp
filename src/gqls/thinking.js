@@ -10,6 +10,8 @@ export const thinkings = gql`
       createTime
       updateTime
       status
+      likeCount
+      isLike
       owner {
         id
         nickname

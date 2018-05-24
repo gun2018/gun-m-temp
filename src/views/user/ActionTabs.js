@@ -6,6 +6,7 @@ import px2rem from '../../styles/px2rem';
 const Wrap = styled.div`
   box-sizing: border-box;
   padding: 0 ${px2rem(10)};
+  margin: ${px2rem(20)} 0;
   display: flex;
   flex-flow: row nowrap;
   .active {
@@ -54,6 +55,7 @@ class ActionTabs extends PureComponent {
         {tabsContent.map(tab => (
           // eslint-disable-next-line
           <div
+            key={tab.key}
             onClick={() => {
               onActionTabClick(tab.key);
             }}

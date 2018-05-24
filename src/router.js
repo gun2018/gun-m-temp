@@ -7,6 +7,7 @@ import Thinking from './views/thinking/thinking';
 import FollowerList from './views/user/follower_list';
 import FanList from './views/user/fan_list';
 import UserInfoCard from './views/user/user_info_card';
+import MyPost from './views/my-post/my-post';
 
 const router = [
   {
@@ -23,6 +24,10 @@ const router = [
   {
     path: '/search',
     component: Search,
+  },
+  {
+    path: '/user/post',
+    component: MyPost,
   },
   {
     path: '/user',

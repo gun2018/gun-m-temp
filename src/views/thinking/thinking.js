@@ -7,10 +7,9 @@ import Button from '../../components/Button';
 // import { NavLink } from 'react-router-dom';
 import { parseQuery } from '../../utils/tools';
 import Loading from '../../components/Loading';
-import Avatar from '../../components/Avatar';
-import { fromNow } from '../../utils/date';
 import PostAndThinkingHeader from '../../components/PostAndThinkingHeader';
 import EditModal from './EditModal';
+import ThingkingList from './ThinkingList';
 
 class Thingking extends Component {
   static propTypes = {
@@ -62,13 +61,7 @@ class Thingking extends Component {
           activeTab="thinking"
           postId={this.query.post_id}
         />
-        {thinkings.map(thinking => (
-          <div key={thinking.id}>
-            <div dangerouslySetInnerHTML={{ __html: thinking.content }} />
-            <span>{fromNow(thinking.updateTime)}</span>
-            <Avatar src={thinking.owner.avatarUrl} />
-          </div>
-        ))}
+        <ThingkingList thinkings={thinkings} />
         <Button
           onClick={this.toggleEditModal}
           // style={{ backgroundColor: '#ED642A', color: '#fff' }}

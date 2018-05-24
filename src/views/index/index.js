@@ -8,7 +8,7 @@ import Avatar from '../../components/Avatar';
 import PostList from './PostList';
 import { posts } from '../../gqls/post';
 import { Container, Topbar } from './index.style';
-
+import Search from './Search';
 class Index extends Component {
   static propTypes = {
     postsRes: PropTypes.object.isRequired,
@@ -22,18 +22,28 @@ class Index extends Component {
   //   const scrollToper = document.documentElement.scrollTop;
   //   console.log('触发', documentHeight, bodyHeight, scrollToper, this);
   // };
-  state = {};
+  state = {
+    isShowSearch: false,
+  };
+  showSearch = () => {
+    this.setState({
+      isShowSearch: !this.state.isShowSearch,
+    });
+    // this.props.history.push('/search');
+  };
   render() {
+    const { isShowSearch } = this.state;
     const { auth } = this.props;
     const { posts = [] } = this.props.postsRes;
     return (
       <Container>
         <Topbar>
-          <Icon type="search" className="icon" />
+          <Icon type="search" onClick={this.showSearch} className="icon" />
           <div className="logo">logo</div>
           <Avatar src={auth.avatarUrl} className="avatar" />
         </Topbar>
         <PostList posts={posts} />
+        {isShowSearch && <Search />}
       </Container>
     );
   }

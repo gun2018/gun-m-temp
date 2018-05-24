@@ -14,6 +14,23 @@ export const posts = gql`
     }
   }
 `;
+export const userPosts = gql`
+  query posts($authorId: Int) {
+    posts(authorId: $authorId, status: 1) {
+      id
+      title
+      brief
+      cover
+      category
+      isLike
+      likeCount
+      thinkingCount
+      titleCommitCount
+      contentCommitCount
+    }
+  }
+`;
+
 export const post = gql`
   query post($id: Int!) {
     post(id: $id) {
@@ -39,8 +56,8 @@ export const post = gql`
 `;
 
 export const postPartCommits = gql`
-  query postPartCommits($userId: Int, $postPartId: Int) {
-    postPartCommits(userId: $userId, postPartId: $postPartId) {
+  query postPartCommits($userId: Int, $postPartId: Int, $postId: Int) {
+    postPartCommits(userId: $userId, postPartId: $postPartId, postId: $postId) {
       id
       postId
       userId

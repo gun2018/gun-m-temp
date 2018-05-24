@@ -46,14 +46,14 @@ const BAR_DATA = [
 class FooterBar extends PureComponent {
   static propTypes = {
     path: PropTypes.string.isRequired,
-  }
+  };
   state = {};
   render() {
     const { path } = this.props;
     return (
       <Wrap>
         {BAR_DATA.map(item => (
-          <Item key={item.icon} color={path === item.href ? 'red' : '#000'}>
+          <Item key={item.icon} color={path === item.href ? '#ed642a' : '#000'}>
             <NavLink to={item.href}>{item.name}</NavLink>
           </Item>
         ))}

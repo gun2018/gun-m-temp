@@ -11,10 +11,9 @@ const Post = styled(Link)`
   color: #444444;
   display: inline-block;
   border-bottom: 1px solid #ebebeb;
-  height: ${px2rem(570)};
+  height: ${px2rem(460)};
   width: 100%;
   border-bottom: 1px #efeff5 solid;
-  margin-bottom: ${px2rem(70)};
 `;
 const Content = styled(Layout)`
   background-color: #fff;
@@ -61,7 +60,7 @@ const Sider = styled(Layout)`
   }
   > .icon-more {
     font-size: ${px2rem(32)};
-    margin-top: ${px2rem(120)};
+    margin-top: ${px2rem(60)};
     transform: rotate(90deg);
   }
 `;
@@ -114,13 +113,6 @@ class PostList extends PureComponent {
                     <h3>{post.title}</h3>
                   </div>
                 </CoverWrap>
-                <div className="info">
-                  <Avatar icon="user" className="avatar" />
-                  <div className="name">李大狗</div>
-                  <div className="time">6小时前</div>
-                </div>
-                {/* <p className="breaf">{post.brief}</p> */}
-                {/* <span>{fromNow(post.createTime)}</span> */}
               </Content>
               <Sider className="sider" breakpoint="sm">
                 <Icon type="heart" className="icon" />
