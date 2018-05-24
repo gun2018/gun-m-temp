@@ -6,6 +6,7 @@ import px2rem from '../../styles/px2rem';
 import { postPartCommits } from '../../gqls/post';
 import { parseQuery } from '../../utils/tools';
 import Loading from '../../components/Loading';
+import Button from '../../components/Button';
 
 const Tabs = styled.div`
   margin-top: ${px2rem(80)};
@@ -49,6 +50,9 @@ class MyPost extends Component {
       activeTab: itemValue,
     });
   };
+  mergePostPartCommit = async postPartCommit => {
+    console.log('postPartCommit', postPartCommit);
+  };
   render() {
     const { postPartCommits, loading } = this.props.postPartCommitsRes;
     const { activeTab } = this.state;
@@ -74,7 +78,20 @@ class MyPost extends Component {
           ))}
         </Tabs>
         <TabContent>
-          <h3>{activePostPartCommits.name}</h3>
+          {activePostPartCommits.map(activePostPartCommit => (
+            <div key={activePostPartCommit.id}>
+              <h3>{activePostPartCommit.commitName}</h3>
+              {activeTab === 0 && (
+                <Button
+                  onClick={() => {
+                    this.mergePostPartCommit(activePostPartCommit);
+                  }}
+                >
+                  合并
+                </Button>
+              )}
+            </div>
+          ))}
         </TabContent>
       </div>
     );
