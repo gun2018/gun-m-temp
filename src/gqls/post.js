@@ -81,8 +81,24 @@ export const postPartCommits = gql`
 `;
 
 export const crearePostPartCommit = gql`
-  mutation crearePostPartCommit($input: AddPostPartCommitInput!) {
+  mutation createPostPartCommit($input: AddPostPartCommitInput!) {
     crearePostPartCommit(input: $input) {
+      id
+    }
+  }
+`;
+
+export const mergePostPartCommit = gql`
+  mutation mergePostPartCommit($input: MergePostPartCommit!) {
+    mergePostPartCommit(input: $input) {
+      id
+    }
+  }
+`;
+
+export const updatePostPartCommit = gql`
+  mutation($input: UpdatePostPartCommitInput!) {
+    updatePostPartCommit(input: $input) {
       id
     }
   }

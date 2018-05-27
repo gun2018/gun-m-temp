@@ -32,7 +32,7 @@ const OtherInfo = styled.div`
 
 class ThinkingList extends PureComponent {
   static propTypes = {
-    thinkings: PropTypes.object,
+    thinkings: PropTypes.array,
   };
   static defaultProps = {
     thinkings: [],

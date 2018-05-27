@@ -1,12 +1,17 @@
-import React, { Component } from 'react';
+import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
 import styled from 'styled-components';
 import px2rem from '../../styles/px2rem';
-import { postPartCommits } from '../../gqls/post';
+import {
+  postPartCommits,
+  mergePostPartCommit,
+  updatePostPartCommit,
+} from '../../gqls/post';
 import { parseQuery } from '../../utils/tools';
 import Loading from '../../components/Loading';
 import Button from '../../components/Button';
+import Avatar from '../../components/Avatar';
 
 const Tabs = styled.div`
   margin-top: ${px2rem(80)};
@@ -21,7 +26,21 @@ const Tabs = styled.div`
   }
 `;
 
-const TabContent = styled.div``;
+const TabContent = styled.div`
+  padding: ${px2rem(38)};
+  .content {
+    height: ${px2rem(70)};
+    overflow: hidden;
+    /* &::after {
+      display: inline-block;
+      content: '...';
+      color: #000;
+      width: ${px2rem(30)};
+    } */
+  }
+`;
+
+const UserInfo = styled.div``;
 
 const tabList = [
   {
@@ -41,17 +60,39 @@ const tabList = [
 class MyPost extends Component {
   static propTypes = {
     postPartCommitsRes: PropTypes.object.isRequired,
+    mergePostPartCommit: PropTypes.func.isRequired,
+    updatePostPartCommit: PropTypes.func.isRequired,
   };
   state = {
-    activeTab: 0,
+    activeTab: 1,
+  };
+  onMergePostPartCommit = async postPartCommit => {
+    const { id, postPartId, seq, content } = postPartCommit;
+    await this.props.mergePostPartCommit({
+      variables: {
+        input: {
+          postPartId,
+          postPartCommitId: id,
+          seq,
+          content,
+        },
+      },
+    });
+  };
+  onRejectPostPartCommit = async postPartCommit => {
+    await this.props.updatePostPartCommit({
+      variables: {
+        input: {
+          id: postPartCommit.id,
+          status: -1,
+        },
+      },
+    });
   };
   selectTab = itemValue => {
     this.setState({
       activeTab: itemValue,
     });
-  };
-  mergePostPartCommit = async postPartCommit => {
-    console.log('postPartCommit', postPartCommit);
   };
   render() {
     const { postPartCommits, loading } = this.props.postPartCommitsRes;
@@ -60,7 +101,7 @@ class MyPost extends Component {
     const activePostPartCommits = postPartCommits.filter(
       postPartCommit => postPartCommit.status === activeTab
     );
-    console.log('activePostPartCommits', activePostPartCommits);
+    console.log(postPartCommits);
     return (
       <div>
         <Tabs>
@@ -78,20 +119,42 @@ class MyPost extends Component {
           ))}
         </Tabs>
         <TabContent>
-          {activePostPartCommits.map(activePostPartCommit => (
-            <div key={activePostPartCommit.id}>
-              <h3>{activePostPartCommit.commitName}</h3>
-              {activeTab === 0 && (
-                <Button
-                  onClick={() => {
-                    this.mergePostPartCommit(activePostPartCommit);
-                  }}
-                >
-                  合并
-                </Button>
-              )}
-            </div>
-          ))}
+          {activePostPartCommits.length > 0
+            ? activePostPartCommits.map(activePostPartCommit => (
+                // eslint-disable-next-line
+                <div key={activePostPartCommit.id}>
+                  <UserInfo>
+                    <Avatar src={activePostPartCommit.user.avatarUrl} />
+                    <span>{activePostPartCommit.user.nickname}</span>
+                  </UserInfo>
+                  <h3>{activePostPartCommit.commitName}</h3>
+                  <div
+                    className="content"
+                    dangerouslySetInnerHTML={{
+                      __html: activePostPartCommit.content,
+                    }}
+                  />
+                  {activeTab === 0 && (
+                    <Fragment>
+                      <Button
+                        onClick={() => {
+                          this.onMergePostPartCommit(activePostPartCommit);
+                        }}
+                      >
+                        合并
+                      </Button>
+                      <Button
+                        onClick={() => {
+                          this.onRejectPostPartCommit(activePostPartCommit);
+                        }}
+                      >
+                        拒绝
+                      </Button>
+                    </Fragment>
+                  )}
+                </div>
+              ))
+            : '无'}
         </TabContent>
       </div>
     );
@@ -106,6 +169,18 @@ const Wrapper = compose(
       return {
         variables: { postId: query.id },
       };
+    },
+  }),
+  graphql(mergePostPartCommit, {
+    name: 'mergePostPartCommit',
+    options: {
+      refetchQueries: ['postPartCommits'],
+    },
+  }),
+  graphql(updatePostPartCommit, {
+    name: 'updatePostPartCommit',
+    options: {
+      refetchQueries: ['postPartCommits'],
     },
   })
 );
