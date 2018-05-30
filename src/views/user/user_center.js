@@ -14,7 +14,32 @@ import MyThinking from './MyThinking';
 const Wrap = styled.div`
   padding: ${px2rem(20)} ${px2rem(20)};
 `;
-const UserInfo = styled.div``;
+const UserInfo = styled.div`
+  > .avatar {
+    margin: ${px2rem(20)} auto;
+  }
+  > .nickname {
+    text-align: center;
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+    line-height: 26px;
+  }
+  > .sign-text {
+    text-align: center;
+    font-size: 12px;
+    color: #666;
+  }
+  > .social {
+    margin: ${px2rem(5)} auto ${px2rem(10)};
+    font-size: 12px;
+    text-align: center;
+    > a {
+      color: #333;
+      margin: 0 ${px2rem(5)};
+    }
+  }
+`;
 
 class UserCenter extends Component {
   static propTypes = {
@@ -35,14 +60,15 @@ class UserCenter extends Component {
       <Wrap>
         <UserInfo>
           <Avatar
+            className="avatar"
             src={auth.avatarUrl}
-            width={px2rem(212)}
-            height={px2rem(212)}
+            width={px2rem(100)}
+            height={px2rem(100)}
           />
-          <p>{auth.nickname}</p>
-          <p>{auth.signText}</p>
-          <div>
-            <NavLink to="/fans">粉丝: {auth.fanCount}</NavLink>
+          <p className="nickname">{auth.nickname}</p>
+          <p className="sign-text">{auth.signText}</p>
+          <div className="social">
+            <NavLink to="/fans">粉丝: {auth.fanCount}</NavLink> | 
             <NavLink to="/followers">关注: {auth.followerCount}</NavLink>
           </div>
         </UserInfo>
