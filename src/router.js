@@ -1,6 +1,6 @@
 import Index from './views/index/index';
 import Post from './views/post/post';
-import Search from './views/search/search';
+// import Search from './views/search/search';
 import UserCenter from './views/user/user_center';
 import Message from './views/message/message';
 import Thinking from './views/thinking/thinking';
@@ -21,10 +21,10 @@ const router = [
     component: Post,
     exact: false,
   },
-  {
-    path: '/search',
-    component: Search,
-  },
+  // {
+  //   path: '/search',
+  //   component: Search,
+  // },
   {
     path: '/user/post',
     component: MyPost,

@@ -50,7 +50,7 @@ class MyPost extends PureComponent {
           </Link>
         ))}
       </Wrap>
-    );
+    ); 
   }
 }
 
