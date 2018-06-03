@@ -6,8 +6,28 @@ import { connect } from 'react-redux';
 import { postPartCommits } from '../../gqls/post';
 import Loading from '../../components/Loading';
 import { COMMIT_STATUS } from '../../config/constant';
+import px2rem from '../../styles/px2rem';
 
-const Wrap = styled.div``;
+const Wrap = styled.div`
+  font-size: 16px;
+  > .item {
+    padding: ${px2rem(10)} 0;
+    border-bottom: 1px #eee solid;
+  }
+  .commit-name {
+    color: #333;
+    margin-right: ${px2rem(10)};
+  }
+  .status {
+    font-weight: bold;
+    color: #ed642a;
+  }
+  .time {
+    text-align: right;
+    font-size: 12px;
+    color: #666;
+  }
+`;
 
 class MyCommit extends Component {
   static propTypes = {
@@ -17,13 +37,13 @@ class MyCommit extends Component {
   render() {
     const { postPartCommits, loading } = this.props.postPartCommitsRes;
     if (loading) return <Loading />;
-    console.log('postPartCommits', postPartCommits);
     return (
       <Wrap>
         {postPartCommits.map(postPartCommit => (
-          <div key={postPartCommit.id}>
-            <span>{postPartCommit.commitName}</span>
-            <span>{COMMIT_STATUS[postPartCommit.status]}</span>
+          <div className="item" key={postPartCommit.id}>
+            <span className="commit-name">{postPartCommit.commitName}</span>
+            <span className="status">{COMMIT_STATUS[postPartCommit.status]}</span>
+            <div className="time">{postPartCommit.createTime}</div>
           </div>
         ))}
       </Wrap>

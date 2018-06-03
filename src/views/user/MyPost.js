@@ -12,11 +12,23 @@ const Wrap = styled.div``;
 
 const PostItem = styled.div`
   padding: ${px2rem(10)} ${px2rem(20)};
-  span {
-    color: #ed642a;
-  }
+  height: ${px2rem(200)};
+  position: relative;
   .meta {
-    text-align: right;
+    color: #ed642a;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-right: ${px2rem(20)};
+    > span {
+      margin-left: ${px2rem(20)};
+    }
+  }
+  > img {
+    width: ${px2rem(240)};
+    height: ${px2rem(180)};
+    float: left;
+    margin-right: ${px2rem(15)};
   }
 `;
 
@@ -28,7 +40,6 @@ class MyPost extends PureComponent {
   render() {
     const { posts, loading } = this.props.postsRes;
     if (loading) return <Loading />;
-    console.log('posts', posts);
     return (
       <Wrap>
         {posts.map(post => (
@@ -39,6 +50,7 @@ class MyPost extends PureComponent {
             to={`/user/post?post_id=${post.id}`}
           >
             <PostItem>
+              <img src={post.cover} alt="cover" />
               <h3>{post.title}</h3>
               <div className="meta">
                 <span>
