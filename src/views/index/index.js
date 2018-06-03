@@ -123,9 +123,9 @@ class Index extends Component {
           <Avatar src={auth.avatarUrl} className="avatar" />
         </Topbar>
         <PostList posts={posts} />
-        <Button className="add-post-btn" onClick={this.toNewPost}>
+        {/* <Button className="add-post-btn" onClick={this.toNewPost}>
           增加文章
-        </Button>
+        </Button> */}
         {/* {isShowSearch && <Search />} */}
       </Container>
     );

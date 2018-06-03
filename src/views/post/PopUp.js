@@ -10,6 +10,7 @@ import CommitDIff from './CommitDiff';
 import { postPartCommits } from '../../gqls/post';
 import { parseQuery, getDiffHTML } from '../../utils/tools';
 import Loading from '../../components/Loading';
+import toast from '../../utils/toast';
 
 const FadeIn = keyframes`
   0% {

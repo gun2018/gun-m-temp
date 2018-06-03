@@ -81,6 +81,7 @@ export const postPartCommits = gql`
       updateTime
       status
       post {
+        id
         title
       }
       user {

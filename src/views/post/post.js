@@ -12,6 +12,7 @@ import PostAndThinkingHeader from '../../components/PostAndThinkingHeader';
 import { parseQuery } from '../../utils/tools';
 import px2rem from '../../styles/px2rem';
 import { MESSAGE_TYPE } from '../../config/constant';
+import toast from '../../utils/toast';
 
 const PageWrap = styled.div`
   position: absolute;
@@ -122,20 +123,22 @@ class Post extends Component {
         },
       },
     });
-    // await this.props.createMessage({
-    //   variables: {
-    //     input: {
-    //       giverId: auth.id,
-    //       receiverId: post.authorId,
-    //       content: `您的文章《${
-    //         post.title
-    //       }》收到了新的合并请求，点击进入我的文章页`,
-    //       type: MESSAGE_TYPE.GET_THINKING,
-    //       url: ``,
-    //       status: 1,
-    //     }
-    //   }
-    // })
+    await this.props.createMessage({
+      variables: {
+        input: {
+          giverId: auth.id,
+          receiverId: post.authorId,
+          content: `您的文章《${
+            post.title
+          }》收到了新的合并请求，点击进入我的文章页`,
+          type: MESSAGE_TYPE.GET_THINKING,
+          url: `/post/`,
+          status: 1,
+        },
+      },
+    });
+    toast('提交成功');
+    this.togglePopUp();
   };
   get query() {
     return parseQuery(this.props.location.search);

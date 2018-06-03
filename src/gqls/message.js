@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const messages = gql`
-  query messages($giverId: Int) {
-    messages(giverId: $giverId) {
+  query messages($receiverId: Int) {
+    messages(receiverId: $receiverId) {
       id
       giverId
       receiverId

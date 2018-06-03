@@ -17,8 +17,8 @@ import Button from '../../components/Button';
 import Avatar from '../../components/Avatar';
 
 const Tabs = styled.div`
-  margin-top: ${px2rem(80)};
-  margin-bottom: ${px2rem(120)};
+  margin-top: ${px2rem(40)};
+  margin-bottom: ${px2rem(40)};
   color: #000;
   font-size: ${px2rem(28)};
   display: flex;

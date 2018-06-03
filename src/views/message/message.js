@@ -19,7 +19,6 @@ const Title = styled.h3`
 const Item = styled.div`
   border-top: 1px #ccc solid;
   width: 100%;
-  height: ${px2rem(120)};
   padding: ${px2rem(15)} ${px2rem(40)};
   position: relative;
   > .avatar {
