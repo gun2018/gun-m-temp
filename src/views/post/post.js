@@ -7,9 +7,11 @@ import { fromNow, formateDate } from '../../utils/date';
 import PopUp from './PopUp';
 import Loading from '../../components/Loading';
 import { post, crearePostPartCommit } from '../../gqls/post';
+import { createMessage } from '../../gqls/message';
 import PostAndThinkingHeader from '../../components/PostAndThinkingHeader';
 import { parseQuery } from '../../utils/tools';
 import px2rem from '../../styles/px2rem';
+import { MESSAGE_TYPE } from '../../config/constant';
 
 const PageWrap = styled.div`
   position: absolute;
@@ -89,6 +91,7 @@ class Post extends Component {
     crearePostPartCommit: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,
     history: PropTypes.object.isRequired,
+    createMessage: PropTypes.func.isRequired,
   };
   state = {
     isShowPopUp: false,
@@ -119,6 +122,20 @@ class Post extends Component {
         },
       },
     });
+    // await this.props.createMessage({
+    //   variables: {
+    //     input: {
+    //       giverId: auth.id,
+    //       receiverId: post.authorId,
+    //       content: `您的文章《${
+    //         post.title
+    //       }》收到了新的合并请求，点击进入我的文章页`,
+    //       type: MESSAGE_TYPE.GET_THINKING,
+    //       url: ``,
+    //       status: 1,
+    //     }
+    //   }
+    // })
   };
   get query() {
     return parseQuery(this.props.location.search);
@@ -146,7 +163,6 @@ class Post extends Component {
     this.togglePopUp();
   };
   render() {
-    console.log('post.js:', this.props);
     const { post, loading } = this.props.postRes;
     const { isShowPopUp, selectPostPart } = this.state;
     const { location } = this.props;
@@ -216,6 +232,9 @@ const wrapper = compose(
     options: {
       refetchQueries: ['postPartCommits'],
     },
+  }),
+  graphql(createMessage, {
+    name: 'createMessage',
   })
 );
 

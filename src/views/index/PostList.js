@@ -2,10 +2,13 @@ import React, { PureComponent, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Link } from 'react-router-dom';
-import { Icon, Layout, Avatar } from 'antd';
-
-import { fromNow } from '../../utils/date';
+import { connect } from 'react-redux';
+import { Icon, Layout } from 'antd';
+import { graphql, compose } from 'react-apollo';
+// import { fromNow } from '../../utils/date';
 import px2rem from '../../styles/px2rem';
+import { deletePostLike, createPostLike } from '../../gqls/post';
+import toast from '../../utils/toast';
 
 const Post = styled(Link)`
   color: #444444;
@@ -13,7 +16,6 @@ const Post = styled(Link)`
   border-bottom: 1px solid #ebebeb;
   height: ${px2rem(460)};
   width: 100%;
-  border-bottom: 1px #efeff5 solid;
 `;
 const Content = styled(Layout)`
   background-color: #fff;
@@ -97,10 +99,41 @@ const CoverWrap = styled.div`
 class PostList extends PureComponent {
   static propTypes = {
     posts: PropTypes.array.isRequired,
+    auth: PropTypes.object.isRequired,
+    deletePostLike: PropTypes.func.isRequired,
+    createPostLike: PropTypes.func.isRequired,
   };
   state = {};
+  toggleLike = async (event, { id, isLike }) => {
+    event.preventDefault();
+    const { auth } = this.props;
+    if (isLike) {
+      // delete
+      await this.props.deletePostLike({
+        variables: {
+          input: {
+            postId: id,
+          },
+        },
+      });
+      toast('取消点赞成功');
+    } else {
+      // create
+      await this.props.createPostLike({
+        variables: {
+          input: {
+            userId: auth.id,
+            postId: id,
+            status: 1,
+          },
+        },
+      });
+      toast('点赞成功');
+    }
+  };
   render() {
     const { posts } = this.props;
+    console.log('posts', posts);
     return (
       <Fragment>
         {posts.map(post => (
@@ -115,7 +148,17 @@ class PostList extends PureComponent {
                 </CoverWrap>
               </Content>
               <Sider className="sider" breakpoint="sm">
-                <Icon type="heart" className="icon" />
+                <Icon
+                  type="heart"
+                  className="icon"
+                  onClick={e => {
+                    this.toggleLike(e, {
+                      id: post.id,
+                      isLike: post.isLike,
+                    });
+                  }}
+                  style={{ color: post.isLike ? '#ed642a' : '' }}
+                />
                 <span>{post.likeCount}</span>
                 <Icon type="message" className="icon" />
                 <span>{post.thinkingCount}</span>
@@ -128,4 +171,27 @@ class PostList extends PureComponent {
     );
   }
 }
-export default PostList;
+
+const wrapper = compose(
+  graphql(deletePostLike, {
+    name: 'deletePostLike',
+    options: {
+      refetchQueries: ['posts'],
+    },
+  }),
+  graphql(createPostLike, {
+    name: 'createPostLike',
+    options: {
+      refetchQueries: ['posts'],
+    },
+  }),
+  connect(select)
+);
+
+function select(state) {
+  return {
+    auth: state.auth,
+  };
+}
+
+export default wrapper(PostList);

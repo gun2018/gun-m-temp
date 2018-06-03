@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
 import { connect } from 'react-redux';
 import { thinkings, createThinking } from '../../gqls/thinking';
+import { thinkingPost } from '../../gqls/post';
+import { createMessage } from '../../gqls/message';
 import Button from '../../components/Button';
 // import { NavLink } from 'react-router-dom';
 import { parseQuery } from '../../utils/tools';
@@ -10,21 +12,25 @@ import Loading from '../../components/Loading';
 import PostAndThinkingHeader from '../../components/PostAndThinkingHeader';
 import EditModal from './EditModal';
 import ThingkingList from './ThinkingList';
+import { MESSAGE_TYPE } from '../../config/constant';
 
 class Thingking extends Component {
   static propTypes = {
     thinkingsRes: PropTypes.object.isRequired,
+    thinkingPostRes: PropTypes.object.isRequired,
     createThinking: PropTypes.func.isRequired,
     location: PropTypes.object.isRequired,
     auth: PropTypes.object.isRequired,
+    createMessage: PropTypes.func.isRequired,
     // match: PropTypes.object.isRequired
   };
   state = {
     isShowEditModal: false,
   };
   onThinkingSubmit = async thinkingValue => {
-    const { auth } = this.props;
+    const { auth, thinkingPostRes } = this.props;
     const { post_id: postId } = this.query;
+    const { title, authorId } = thinkingPostRes.post;
     try {
       await this.props.createThinking({
         variables: {
@@ -32,6 +38,18 @@ class Thingking extends Component {
             content: thinkingValue,
             userId: auth.id,
             postId,
+            status: 1,
+          },
+        },
+      });
+      await this.props.createMessage({
+        variables: {
+          input: {
+            giverId: auth.id,
+            receiverId: authorId,
+            content: `您的文章《${title}》收到了新的观点，点击进入该文章观点页`,
+            type: MESSAGE_TYPE.GET_THINKING,
+            url: `/thinkings?post_id=${postId}`,
             status: 1,
           },
         },
@@ -84,9 +102,17 @@ const wrapper = compose(
     name: 'thinkingsRes',
     options: props => {
       const query = parseQuery(props.location.search);
-      console.log('query', query);
       return {
         variables: { postId: +query.post_id },
+      };
+    },
+  }),
+  graphql(thinkingPost, {
+    name: 'thinkingPostRes',
+    options: props => {
+      const query = parseQuery(props.location.search);
+      return {
+        variables: { id: +query.post_id },
       };
     },
   }),
@@ -95,6 +121,9 @@ const wrapper = compose(
     options: {
       refetchQueries: ['thinkings'],
     },
+  }),
+  graphql(createMessage, {
+    name: 'createMessage',
   }),
   connect(select)
 );

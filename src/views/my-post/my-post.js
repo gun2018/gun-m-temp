@@ -2,12 +2,15 @@ import React, { Component, Fragment } from 'react';
 import PropTypes from 'prop-types';
 import { graphql, compose } from 'react-apollo';
 import styled from 'styled-components';
+import { connect } from 'react-redux';
 import px2rem from '../../styles/px2rem';
 import {
   postPartCommits,
   mergePostPartCommit,
   updatePostPartCommit,
 } from '../../gqls/post';
+import { createMessage } from '../../gqls/message';
+import { MESSAGE_TYPE } from '../../config/constant';
 import { parseQuery } from '../../utils/tools';
 import Loading from '../../components/Loading';
 import Button from '../../components/Button';
@@ -62,12 +65,14 @@ class MyPost extends Component {
     postPartCommitsRes: PropTypes.object.isRequired,
     mergePostPartCommit: PropTypes.func.isRequired,
     updatePostPartCommit: PropTypes.func.isRequired,
+    createMessage: PropTypes.func.isRequired,
   };
   state = {
     activeTab: 1,
   };
   onMergePostPartCommit = async postPartCommit => {
-    const { id, postPartId, seq, content } = postPartCommit;
+    const { id, postPartId, seq, content, userId, post } = postPartCommit;
+    const { auth } = this.props;
     await this.props.mergePostPartCommit({
       variables: {
         input: {
@@ -78,13 +83,43 @@ class MyPost extends Component {
         },
       },
     });
+    await this.props.createMessage({
+      variables: {
+        input: {
+          giverId: auth.id,
+          receiverId: userId,
+          content: `您在《${
+            post.title
+          }》下的合并请求被同意合并了，点击查看文章详情`,
+          type: MESSAGE_TYPE.COMMIT_RES,
+          url: `/post?post_id=${post.id}`,
+          status: 1,
+        },
+      },
+    });
   };
   onRejectPostPartCommit = async postPartCommit => {
+    const { auth } = this.props;
+    const { userId, post } = postPartCommit;
     await this.props.updatePostPartCommit({
       variables: {
         input: {
           id: postPartCommit.id,
           status: -1,
+        },
+      },
+    });
+    await this.props.createMessage({
+      variables: {
+        input: {
+          giverId: auth.id,
+          receiverId: userId,
+          content: `您在《${
+            post.title
+          }》下的合并请求被拒绝合并了，点击查看文章详情`,
+          type: MESSAGE_TYPE.COMMIT_RES,
+          url: `/post?post_id=${post.id}`,
+          status: 1,
         },
       },
     });
@@ -182,7 +217,17 @@ const Wrapper = compose(
     options: {
       refetchQueries: ['postPartCommits'],
     },
-  })
+  }),
+  graphql(createMessage, {
+    name: 'createMessage',
+  }),
+  connect(select)
 );
+
+function select(state) {
+  return {
+    auth: state.auth,
+  };
+}
 
 export default Wrapper(MyPost);

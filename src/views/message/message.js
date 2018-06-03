@@ -1,16 +1,27 @@
 import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { NavLink } from 'react-router-dom';
+import { graphql, compose } from 'react-apollo';
+import { connect } from 'react-redux';
 import px2rem from '../../styles/px2rem';
 import Avatar from '../../components/Avatar';
-
+import { messages, updateMessage } from '../../gqls/message';
+import { fromNow } from '../../utils/date';
+import Loading from '../../components/Loading';
 // import { NavLink } from 'react-router-dom';
+
+const Title = styled.h3`
+  margin-top: 0.5em;
+  text-align: center;
+`;
 
 const Item = styled.div`
   border-top: 1px #ccc solid;
   width: 100%;
   height: ${px2rem(120)};
-  padding: ${px2rem(15)} ${px2rem(30)};
+  padding: ${px2rem(15)} ${px2rem(40)};
+  position: relative;
   > .avatar {
     float: left;
     margin-right: ${px2rem(30)};
@@ -36,66 +47,89 @@ const Item = styled.div`
   }
 `;
 
-
-const MESSAGE = [
-  {
-    users: '单身陆',    // 为了简单直接上名字的假数据
-    time: '3小时前',
-    content: '向您的文章发表了观点',
-    href: '/thinkings?post_id=2',
-    id: 0
-  },
-  {
-    users: '美丽小妍妍',
-    time: '5小时前',
-    content: '向您的文章提交了合并请求',
-    id: 1
-  },
-  {
-    users: '美丽小妍妍',
-    time: '8小时前',
-    content: '您的提交已被合并/拒绝',
-    id: 2
-  },
-  {
-    users: '美丽小妍妍',
-    time: '8小时前',
-    content: '点赞了您的观点',
-    href: '/post?post_id=2',
-    id: 3
-  },
-  {
-    users: '撸文',
-    time: '8小时前',
-    content: '您关注的新闻有新的进展',
-    id: 4
-  },
-]
+const Unread = styled.div`
+  width: ${px2rem(14)};
+  height: ${px2rem(14)};
+  border-radius: 50%;
+  background-color: red;
+  position: absolute;
+  right: ${px2rem(30)};
+  top: ${px2rem(70)};
+`;
 
 class Message extends Component {
+  static propTypes = {
+    messagesRes: PropTypes.object.isRequired,
+    updateMessage: PropTypes.func.isRequired,
+    history: PropTypes.object.isRequired,
+  };
   state = {};
+  onMessageClick = async message => {
+    if (message.status === 1) {
+      await this.props.updateMessage({
+        variables: {
+          input: {
+            id: message.id,
+            status: 0,
+          },
+        },
+      });
+    }
+    this.props.history.push(message.url);
+  };
   render() {
+    const { messages, loading } = this.props.messagesRes;
+    if (loading) return <Loading />;
+    console.log('messagesRes', messages);
     return (
       <div>
-        <h3>消息列表</h3>
+        <Title>消息列表</Title>
         <div>
-          {MESSAGE.map(item => (
-            <Item key={item.id}>
-              <Avatar className="avatar"
+          {messages.map(message => (
+            <Item
+              key={message.id}
+              onClick={() => {
+                this.onMessageClick(message);
+              }}
+            >
+              <Avatar
+                className="avatar"
                 width={px2rem(80)}
                 height={px2rem(80)}
-                />
-              <NavLink to="/user" className="content">
-                <span className="user">{item.users}</span>
-                <span className="action">{item.content}</span>
-                <div className="time">{item.time}</div>
-              </NavLink>
+                src={message.giver.avatarUrl}
+              />
+              {message.status === 1 && <Unread />}
+              {/* <NavLink to="/user" className="content"> */}
+              <span className="user">{message.giver.nickname}</span>
+              <span className="action">{message.content}</span>
+              <div className="time">{fromNow(message.createTime)}</div>
+              {/* </NavLink> */}
             </Item>
           ))}
         </div>
-        
       </div>
     );
   }
 }
-export default Message;
+
+const Wrapper = compose(
+  graphql(messages, {
+    name: 'messagesRes',
+    options: props => {
+      const receiverId = props.auth.id;
+      return {
+        variables: { receiverId },
+      };
+    },
+  }),
+  graphql(updateMessage, {
+    name: 'updateMessage',
+  })
+);
+
+function select(state) {
+  return {
+    auth: state.auth,
+  };
+}
+export default connect(select)(Wrapper(Message));

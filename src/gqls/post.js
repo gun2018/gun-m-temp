@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const posts = gql`
-  query posts($authorId: Int) {
-    posts(authorId: $authorId, status: 1) {
+  query posts($authorId: Int, $wd: String) {
+    posts(authorId: $authorId, wd: $wd, status: 1) {
       id
       title
       brief
@@ -55,6 +55,16 @@ export const post = gql`
   }
 `;
 
+export const thinkingPost = gql`
+  query post($id: Int!) {
+    post(id: $id) {
+      id
+      title
+      authorId
+    }
+  }
+`;
+
 export const postPartCommits = gql`
   query postPartCommits($userId: Int, $postPartId: Int, $postId: Int) {
     postPartCommits(userId: $userId, postPartId: $postPartId, postId: $postId) {
@@ -70,6 +80,9 @@ export const postPartCommits = gql`
       createTime
       updateTime
       status
+      post {
+        title
+      }
       user {
         id
         nickname
@@ -99,6 +112,22 @@ export const mergePostPartCommit = gql`
 export const updatePostPartCommit = gql`
   mutation($input: UpdatePostPartCommitInput!) {
     updatePostPartCommit(input: $input) {
+      id
+    }
+  }
+`;
+
+export const createPostLike = gql`
+  mutation createPostLike($input: AddPostLikeInput!) {
+    createPostLike(input: $input) {
+      id
+    }
+  }
+`;
+
+export const deletePostLike = gql`
+  mutation($input: DeletePostLikeInput!) {
+    deletePostLike(input: $input) {
       id
     }
   }

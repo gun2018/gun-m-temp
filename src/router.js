@@ -8,6 +8,7 @@ import FollowerList from './views/user/follower_list';
 import FanList from './views/user/fan_list';
 import UserInfoCard from './views/user/user_info_card';
 import MyPost from './views/my-post/my-post';
+import NewPost from './views/new-post/new-post';
 
 const router = [
   {
@@ -58,6 +59,11 @@ const router = [
     path: '/user-info-card',
     isShowFooter: false,
     component: UserInfoCard,
+  },
+  {
+    path: '/new-post',
+    isShowFooter: false,
+    component: NewPost,
   },
 ];
 

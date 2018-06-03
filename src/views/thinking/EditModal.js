@@ -4,7 +4,7 @@ import styled, { keyframes } from 'styled-components';
 // import { Button } from 'antd-mobile';
 import Button from '../../components/Button';
 import px2rem from '../../styles/px2rem';
-import Input from '../../components/Input';
+import Textarea from '../../components/Textarea';
 
 const toTop = keyframes`
   0% {
@@ -56,7 +56,7 @@ class EditModal extends PureComponent {
     const isCanSubmit = thinkingValue.length === 0;
     return (
       <Wrap>
-        <Input
+        <Textarea
           textareaWidth="90%"
           textareaHeight={px2rem(300)}
           placeholder="输入你的观点"
